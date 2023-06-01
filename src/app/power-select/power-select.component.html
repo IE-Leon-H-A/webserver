@@ -1,1 +1,34 @@
-<p>power-select works!</p>
+<h1> Choose charging power</h1>
+
+<div class="content">
+  <div class="row">
+    <div class="col-6" *ngFor="let power of powers">
+      <div class="card-power">
+        <div class="green-side">
+          <div class="top">
+            CHARGING SPEED
+          </div>
+          <div class="bottom">
+            <img src="../../assets/img/lightning-blue.svg" height="60">
+            <span class="bigFont">
+              {{power.power}}
+            </span>
+            kwh
+          </div>
+        </div>
+        <div class="white-side">
+          <div class="top">
+            PRICE<br>
+            <span class="muted-font">per kWh</span>
+          </div>
+          <div class="bottom">
+            <span class="bigFont">
+              {{power.price | number: '1.2-2'}}
+            </span>
+            €
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

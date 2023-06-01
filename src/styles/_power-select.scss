@@ -1,0 +1,66 @@
+.power-select {
+  h1 {
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .card-power {
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 20px;
+    color: #152E53;
+
+    .muted-font {
+      color: #a1abba;
+    }
+
+    .top {
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 36px;
+      padding: 24px;
+    }
+
+    .bottom {
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 56px;
+      letter-spacing: 0em;
+      padding: 24px;
+      display: flex;
+      align-items: end;
+
+      .bigFont {
+        font-size: 78px;
+        font-weight: 700;
+        line-height: 78px;
+        margin-left: 10px;
+      }
+    }
+
+  }
+
+
+  .green-side {
+    width: 298px;
+    height: 240px;
+    background-color: #CAEA2F;
+    border-radius: 20px 0 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .white-side {
+    width: 298px;
+    height: 240px;
+    background-color: #fff;
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+}
