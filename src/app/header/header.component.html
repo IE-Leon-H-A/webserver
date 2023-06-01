@@ -1,11 +1,11 @@
 <div class="app-header">
-    <div class="back-btn">
+    <div class="back-btn" *ngIf="router.url !== '/home'" (click)="goBack()">
         <img src="../../assets/img/back-btn.svg" height="84">
     </div>
-    <div class="header-logo">
+    <div class="header-logo" *ngIf="router.url !== '/home'">
         <img src="../../assets/img/logo.svg" height="45">
     </div>
-    <div class="choose-lang">
+    <div class="choose-lang" *ngIf="router.url !== '/home'">
         <img src="../../assets/img/pay-info-btn.svg" height="84">
     </div>
     <div class="choose-lang">

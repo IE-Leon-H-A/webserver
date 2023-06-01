@@ -3,13 +3,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 30px;
+  padding: 0 45px;
+  background-color: rgba($color: #ffffff, $alpha: 0.05);
 
   svg {
     height: 84px;
   }
-
-
 }
 
 .header-logo {

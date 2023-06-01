@@ -1,5 +1,5 @@
-<div class="container-fluid bg-gradient-ev">
-  <div class="row bg-leaf">
+<div class="container-fluid bg-gradient-ev px-0 {{url}}">
+  <div class="row bg-leaf" [ngClass]="{'leafUp': url !== 'home'}">
     <div class="col-12">
       <app-header></app-header>
       <router-outlet></router-outlet>

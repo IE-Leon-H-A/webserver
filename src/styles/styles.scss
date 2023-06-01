@@ -1,6 +1,7 @@
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 @import 'header';
 @import 'home';
+@import 'power-select';
 
 $image-path: "../assets/img"; // image path without trailing slash
 
@@ -13,21 +14,24 @@ body {
   background-image: url("#{$image-path}/bg.svg");
   background-size: cover;
   height: 100vh;
+  z-index: -3;
 
 }
 
 .bg-leaf {
   height: 100vh;
+  background-image: url("#{$image-path}/leaf.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
 
-  &::after {
-    background-image: url("#{$image-path}/leaf.svg");
-    background-size: cover;
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0.05;
-    height: 100vh;
-    width: 100%;
+  &.leafUp {
+    background-position: 0 -690px;
+  }
+}
+
+.home {
+  .app-header {
+    justify-content: end;
+    background-color: none !important;
   }
 }
