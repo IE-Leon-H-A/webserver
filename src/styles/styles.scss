@@ -1,8 +1,32 @@
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'header';
+
 $image-path: "../assets/img"; // image path without trailing slash
 
-
 /* You can add global styles to this file, and also import other style files */
-body{
-    background-color: #00ffff;
+body {
+  font-size: 1.5rem;
+}
+
+.bg-gradient-ev {
+  background-image: url("#{$image-path}/bg.svg");
+  background-size: cover;
+  height: 100vh;
+
+}
+
+.bg-leaf {
+  height: 100vh;
+
+  &::after {
     background-image: url("#{$image-path}/leaf.svg");
+    background-size: cover;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.05;
+    height: 100vh;
+    width: 100%;
+  }
 }
