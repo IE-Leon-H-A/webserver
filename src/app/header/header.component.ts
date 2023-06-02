@@ -23,6 +23,10 @@ export class HeaderComponent implements OnInit {
     if (this.router.url.includes('/add-value')) {
       this.router.navigateByUrl('/power-select');
     }
+
+    if (this.router.url.includes('/payment')) {
+      this.router.navigateByUrl('/power-select');
+    }
   }
 
 }

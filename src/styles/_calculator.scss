@@ -67,12 +67,11 @@
 .calculator {
   display: flex;
 
-
-
   .numpad {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 595px;
 
     .calc-button {
 
@@ -99,6 +98,18 @@
 
   .add-value-button {
     width: 195px;
-    background-color: rebeccapurple;
+    background-color: #CAEA2F;
+    border-top: 1px solid #3b6dae;
+    border-radius: 0 0 20px 0;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 49px;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: end;
+    span{
+        margin: 0 0 25px 25px;
+        opacity: 0.3;
+    }
   }
 }

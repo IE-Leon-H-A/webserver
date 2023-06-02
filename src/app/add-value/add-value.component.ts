@@ -11,6 +11,8 @@ export class AddValueComponent implements OnInit {
     price: 0.80
   };
 
+  priceLimit = 0;
+
   keyboardButtons = [
     { value: 1 },
     { value: 2 },

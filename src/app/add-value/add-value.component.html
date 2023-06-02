@@ -50,7 +50,9 @@
         <mat-card-content>
 
           <div class="input-calculator">
-            <div class="price-limit">00,00</div>
+            <div class="price-limit">
+              {{priceLimit | number: '1.2-2'}}
+            </div>
             <div class="currency">€</div>
             <div class="limitator"></div>
             <div class="approx-charge">
@@ -73,7 +75,7 @@
                     </span>
 
                     <span *ngIf="n.value === 'backspace'">
-                      <img src="../../assets/img/lightning-blue.svg" height="60">
+                      <img src="../../assets/img/numpad-backspace.svg" height="38">
                     </span>
                   </button>
                 </div>
@@ -81,8 +83,10 @@
               </ng-container>
 
             </div>
-            <div class="add-value-button">
-              Add Value
+            <div class="add-value-button" [routerLink]="['/payment']" routerLinkActive="router-link-active">
+              <span>
+                Add Value
+              </span>
             </div>
           </div>
 
