@@ -1,13 +1,18 @@
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
+
+$blue: #152E53;
+$image-path: "../assets/img"; // image path without trailing slash
+
 @import 'header';
 @import 'home';
+@import 'calculator';
 @import 'power-select';
-
-$image-path: "../assets/img"; // image path without trailing slash
 
 /* You can add global styles to this file, and also import other style files */
 body {
   font-size: 1.5rem;
+  color: $blue;
+
 }
 
 .bg-gradient-ev {
@@ -15,7 +20,6 @@ body {
   background-size: cover;
   height: 100vh;
   z-index: -3;
-
 }
 
 .bg-leaf {
@@ -36,6 +40,43 @@ body {
   }
 }
 
-.content{
+.content {
   margin: 0 50px;
+}
+
+.big-white-btn {
+  font-size: 42px;
+  font-weight: bold;
+  height: 103px;
+}
+
+.mat-raised-button,
+.mat-card {
+  border-radius: 20px !important;
+  color: $blue !important;
+}
+
+.mat-card {
+  padding: 0 !important;
+}
+
+.mat-card-header {
+  background-color: $blue !important;
+  color: #fff !important;
+  font-size: 38px;
+  padding: 0 9px;
+  border-radius: 20px 20px 0 0;
+  height: 68px;
+  display: flex;
+  align-items: center;
+
+
+  letter-spacing: 0.01em;
+
+
+  .mat-card-title {
+    font-size: 30px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }

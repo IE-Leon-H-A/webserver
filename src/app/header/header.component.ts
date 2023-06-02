@@ -19,6 +19,10 @@ export class HeaderComponent implements OnInit {
     if (this.router.url === '/power-select') {
       this.router.navigateByUrl('/home');
     }
+
+    if (this.router.url.includes('/add-value')) {
+      this.router.navigateByUrl('/power-select');
+    }
   }
 
 }

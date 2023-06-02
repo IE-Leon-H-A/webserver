@@ -1,0 +1,79 @@
+<div class="content" style="margin-top: 30px;">
+  <div class="row">
+    <div class="col-4">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>
+            Selected
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="card-power selected-power">
+            <div class="green-side">
+              <div class="top">
+                CHARGING SPEED
+              </div>
+              <div class="bottom">
+                <img src="../../assets/img/lightning-blue.svg" height="60">
+                <span class="bigFont">
+                  {{power.power}}
+                </span>
+                kW
+              </div>
+            </div>
+            <div class="white-side">
+              <div class="top">
+                PRICE<br>
+                <span class="muted-font">per kWh</span>
+              </div>
+              <div class="bottom">
+                <span class="bigFont">
+                  {{power.price | number: '1.2-2'}}
+                </span>
+                €
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <button class="w-100 mt-4 big-white-btn" mat-raised-button>Cancel</button>
+    </div>
+
+    <div class="col-8">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>
+            Add Value
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <div class="input-calculator">
+            <div class="price-limit">00,00</div>
+            <div class="currency">€</div>
+            <div class="limitator"></div>
+            <div class="approx-charge">
+              <div class="top">Approx charge</div>
+              <div class="bottom">
+                <div class="power">000</div>
+                <div class="unit">kWh</div>
+              </div>
+            </div>
+          </div>
+
+          <p>sdfasdf </p>
+          <p>sdfasdf </p>
+          <p>sdfasdf </p>
+          <p>sdfasdf </p>
+          <p>sdfasdf </p>
+          <p>sdfasdf </p>
+          
+
+
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

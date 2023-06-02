@@ -3,7 +3,7 @@
 <div class="content">
   <div class="row">
     <div class="col-6" *ngFor="let power of powers">
-      <div class="card-power">
+      <div class="card-power" [routerLink]="['/add-value', power.power, power.price]">
         <div class="green-side">
           <div class="top">
             CHARGING SPEED
@@ -13,7 +13,7 @@
             <span class="bigFont">
               {{power.power}}
             </span>
-            kwh
+            kW
           </div>
         </div>
         <div class="white-side">
@@ -23,7 +23,7 @@
           </div>
           <div class="bottom">
             <span class="bigFont">
-              {{power.price | number: '1.2-2'}}
+              {{power.price}}
             </span>
             €
           </div>
