@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { PowerSelectComponent } from './power-select/power-select.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PowerSelectComponent } from './power-select/power-select.component';
     HomeComponent,
     HeaderComponent,
     PowerSelectComponent,
-    AddValueComponent
+    AddValueComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
