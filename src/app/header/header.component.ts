@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalComponent } from '../modal/modal.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -11,7 +10,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private dialogReference: MatDialog
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +39,16 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openDialog() {
-    this.dialogReference.open(ModalComponent);
+  openDialog(dialogName: any) {
+    this.dialog.open(dialogName, {
+      width: '1142px',
+      height: '686px',
+    });
+
+  }
+
+  closeDialog(dialogName: any) {
+    this.dialog.closeAll();
   }
 
 }
