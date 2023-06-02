@@ -21,8 +21,8 @@ export class ChargingComponent implements OnInit {
 
   // Hadcoded
   start_time = new Date().getTime() / 1000;;
-  ev_capacity = 50;
-  ev_start_soc = 98;
+  ev_capacity = 40;
+  ev_start_soc = this.randomInteger(30, 50);
 
   // func vars
   elapsed_time = 0;
@@ -50,6 +50,10 @@ export class ChargingComponent implements OnInit {
 
   ngOnInit(): void {
     this.myLoop()
+  }
+
+  randomInteger(min: any, max: any) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   myLoop() {
