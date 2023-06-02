@@ -15,14 +15,14 @@ export class ChargingComponent implements OnInit {
   charging_active_flag = 1;
 
   // Are changed based on user input from pevious page
-  price = 1;
-  price_limit = 1;
+  price = this.sharedService.power.price;
+  price_limit = Number(this.sharedService.priceLimit);
   charging_power = this.sharedService.power.power;
 
   // Hadcoded
   start_time = new Date().getTime() / 1000;;
   ev_capacity = 50;
-  ev_start_soc = 46;
+  ev_start_soc = 98;
 
   // func vars
   elapsed_time = 0;
@@ -77,7 +77,13 @@ export class ChargingComponent implements OnInit {
         // Redirect
       }
 
-      this.time_remaining_sec = (this.approx_time - this.elapsed_time)
+      if (this.soc >= 99) {
+        // console.log("cost limit reached");
+        this.charging_active_flag = 0;
+        // Redirect
+      }
+
+      this.time_remaining_sec = (this.approx_time - this.elapsed_time - 4)
       console.log("time remaining: " + this.time_remaining_sec);
 
       this.time_remaining_min = Math.floor((this.time_remaining_sec / 60));
