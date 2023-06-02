@@ -9,7 +9,7 @@
 					STATE OF CHARG
 				</div>
 				<div class="content">
-					<div>{{soc}}<small>%</small></div>
+					<div>{{soc | number:"1.0-0"}}<small>%</small></div>
 				</div>
 			</div>
 		</div>
@@ -19,8 +19,8 @@
 					MONEY SPENT
 				</div>
 				<div class="content">
-					<div>{{money_spent}}€</div>
-					<div>{{money_left}}<small>€</small></div>
+					<div>{{money_spent | number:"1.2-2"}}€</div>
+					<div>{{money_left | number:"1.2-2"}}<small>€</small></div>
 				</div>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 					CHARGING SPEED
 				</div>
 				<div class="content">
-					<div>{{trasnfered_kwh}}<small>kWh</small></div>
+					<div>{{charging_power}}<small>kWh</small></div>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 					REMAINING TIME
 				</div>
 				<div class="content">
-					<div>{{time_remaining}}<small>min</small></div>
+					<div>{{time_remaining / 60}}<small>min</small></div>
 				</div>
 			</div>
 		</div>
