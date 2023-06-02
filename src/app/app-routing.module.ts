@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'payment', component: PaymentComponent },
   { path: 'home', component: HomeComponent },
   { path: 'power-select', component: PowerSelectComponent },
-  { path: 'add-value/:power/:price', component: AddValueComponent },
+  { path: 'add-value', component: AddValueComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 

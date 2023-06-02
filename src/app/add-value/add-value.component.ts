@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+import { SharedService } from './../_services/shared.service';
+
 @Component({
   selector: 'app-add-value',
   templateUrl: './add-value.component.html',
 })
 export class AddValueComponent implements OnInit {
-
-  power = {
-    power: 50,
-    price: 0.82
-  };
-
-  priceLimit = '0';
 
   keyboardButtons = [
     { value: '1' },
@@ -26,27 +21,29 @@ export class AddValueComponent implements OnInit {
     { value: '00' },
     { value: '0' },
     { value: 'backspace' }
-  ]
+  ];
 
-  calculatedKwh = 0;
-
-  constructor() { }
+  constructor(
+    public sharedService: SharedService
+  ) {
+    sharedService.priceLimit = '0';
+  }
 
   ngOnInit(): void {
   }
 
   numPadPressed(key: any) {
     if (key === 'backspace') {
-      if (this.priceLimit.length === 1) {
-        this.priceLimit = '0';
+      if (this.sharedService.priceLimit.length === 1) {
+        this.sharedService.priceLimit = '0';
       } else {
-        this.priceLimit = this.priceLimit.slice(0, -1);
+        this.sharedService.priceLimit = this.sharedService.priceLimit.slice(0, -1);
       }
-    } else if (this.priceLimit.length < 5) {
-      if (this.priceLimit === '0') {
-        this.priceLimit = key;
+    } else if (this.sharedService.priceLimit.length < 4) {
+      if (this.sharedService.priceLimit === '0') {
+        this.sharedService.priceLimit = key;
       } else {
-        this.priceLimit = this.priceLimit + key;
+        this.sharedService.priceLimit = this.sharedService.priceLimit + key;
       }
     }
     this.calclulateKwh()
@@ -54,7 +51,7 @@ export class AddValueComponent implements OnInit {
 
 
   calclulateKwh() {
-    this.calculatedKwh = Number(this.priceLimit) * this.power.price
+    this.sharedService.calculatedKwh = Number(this.sharedService.priceLimit) / this.sharedService.power.price
   }
 
 

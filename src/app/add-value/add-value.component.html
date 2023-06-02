@@ -1,7 +1,7 @@
 <div class="content" style="margin-top: 30px;">
   <div class="row">
     <div class="col-4">
-      <mat-card class="example-card">
+      <mat-card>
         <mat-card-header>
           <mat-card-title>
             Selected
@@ -16,7 +16,7 @@
               <div class="bottom">
                 <img src="../../assets/img/lightning-blue.svg" height="60">
                 <span class="bigFont">
-                  {{power.power}}
+                  {{sharedService.power.power}}
                 </span>
                 kW
               </div>
@@ -28,7 +28,7 @@
               </div>
               <div class="bottom">
                 <span class="bigFont">
-                  {{power.price | number: '1.2-2'}}
+                  {{sharedService.power.price | number: '1.2-2'}}
                 </span>
                 €
               </div>
@@ -37,11 +37,11 @@
         </mat-card-content>
       </mat-card>
 
-      <button class="w-100 mt-4 big-white-btn" mat-raised-button>Cancel</button>
+      <button [routerLink]="['/home']" class="w-100 mt-4 big-white-btn" mat-raised-button>Cancel</button>
     </div>
 
     <div class="col-8">
-      <mat-card class="example-card">
+      <mat-card>
         <mat-card-header>
           <mat-card-title>
             Add Value
@@ -51,15 +51,15 @@
 
           <div class="input-calculator">
             <div class="price-limit">
-              {{priceLimit}}.00
+              {{sharedService.priceLimit}}.00
             </div>
             <div class="currency">€</div>
             <div class="limitator"></div>
             <div class="approx-charge">
               <div class="top">Approx charge</div>
               <div class="bottom">
-                <div class="power" *ngIf="calculatedKwh > 0">{{calculatedKwh | number: '1.2-2'}}</div>
-                <div class="power" *ngIf="calculatedKwh === 0">000</div>
+                <div class="power" *ngIf="sharedService.calculatedKwh > 0">{{sharedService.calculatedKwh | number: '1.0-0'}}</div>
+                <div class="power" *ngIf="sharedService.calculatedKwh === 0">000</div>
                 <div class="unit">kWh</div>
               </div>
             </div>

@@ -1,1 +1,101 @@
-<p>payment works!</p>
+<div class="content" style="margin-top: 30px;">
+	<div class="row">
+		<div class="col-4">
+			<mat-card>
+				<mat-card-header>
+					<mat-card-title>
+						Selected
+					</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<div class="card-power selected-power payment">
+						<div class="green-side">
+							<div class="top">
+								CHARGING SPEED
+							</div>
+							<div class="bottom">
+								<img src="../../assets/img/lightning-blue.svg" height="60">
+								<span class="bigFont">
+									{{sharedService.power.power}}
+								</span>
+								kW
+							</div>
+						</div>
+						<div class="white-side">
+							<div class="top">
+								ADDED AMOUNT<br>
+							</div>
+							<div class="bottom d-flex flex-column align-items-start">
+								<div>
+									<span class="bigFont"> {{sharedService.power.price | number: '1.2-2'}} </span> €
+								</div>
+								<div class="divider"></div>
+								<div class="ofCharge">
+									<span> {{sharedService.calculatedKwh | number: '1.0-0'}} </span>
+									kW of charge
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+
+			<button class="w-100 mt-4 big-white-btn" [routerLink]="['/home']" mat-raised-button>Cancel</button>
+		</div>
+
+		<div class="col-8">
+			<mat-card style="height: 600px" *ngIf="!processingPayment">
+				<mat-card-header>
+					<mat-card-title>
+						Payment
+					</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<div class="m-4">
+						<div class="row mb-3">
+							<div class="col-5">
+								<div class="bg-light d-flex align-items-center justify-content-center"
+									style="height: 379px; border-radius: 20px;">
+
+
+									<img src="../../assets/img/payment-terminal-img.svg" class="m-3" height="233">
+
+								</div>
+							</div>
+							<div class="col-7">
+								<div>
+
+									<div class="title mb-4">Pay</div>
+									<div class="title mb-5">
+										<span style="font-weight: bold; font-size: 64px;">
+											{{sharedService.priceLimit}}
+										</span>
+										€
+									</div>
+
+									<p>It is available to pay<br> with credit card or phone</p>
+									<p>Pay by lean phone on card reader.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<button mat-flat-button color="primary" class="mb-4 green-button">Change Amount</button>
+							</div>
+						</div>
+					</div>
+
+				</mat-card-content>
+			</mat-card>
+			<mat-card style="height: 600px" class="d-flex justify-content-center align-items-center flex-column"
+				*ngIf="processingPayment">
+				<img src="../../assets/img/payment-loading-icon.svg" class="m-3" height="180" *ngIf="infoText === 'Processing payment'" >
+				<img src="../../assets/img/payment-success.svg" class="m-3" height="180" *ngIf="infoText === 'Payment Succesful'" >
+				<div class="title">
+					{{infoText}}
+				</div>
+			</mat-card>
+		</div>
+	</div>
+</div>

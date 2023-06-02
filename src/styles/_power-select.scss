@@ -43,7 +43,6 @@
       font-size: 78px;
       font-weight: 700;
       line-height: 78px;
-      margin-left: 10px;
     }
   }
 
@@ -96,10 +95,45 @@
     .bottom {
       padding-bottom: 20px;
       padding-top: 0;
+
+      .divider {
+        background-color: #152E53;
+        width: 100%;
+        height: 1px;
+      }
+
+      .ofCharge {
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 33px;
+        letter-spacing: 0em;
+
+        span {
+          font-size: 48px;
+          font-weight: 800;
+          line-height: 56px;
+          letter-spacing: -0.01em;
+          text-align: left;
+
+        }
+
+      }
+
+
     }
 
 
 
+  }
+
+  &.payment {
+    .green-side {
+      height: 172px;
+    }
+
+    .white-side {
+      height: 232px;
+    }
   }
 
 
