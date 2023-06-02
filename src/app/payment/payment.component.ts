@@ -1,6 +1,6 @@
-import { Router } from '@angular/router';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { SharedService } from './../_services/shared.service';
 
@@ -14,7 +14,8 @@ export class PaymentComponent implements OnInit {
 
   processingPayment = false;
 
-  infoText = 'Processing payment'
+  infoText = 'Processing payment';
+
 
   constructor(
     public sharedService: SharedService,
@@ -23,6 +24,7 @@ export class PaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     setTimeout(() => {
       this.processingPayment = true;
       this.infoText = 'Processing payment';
@@ -40,11 +42,16 @@ export class PaymentComponent implements OnInit {
         }, 2000);
 
       }, 2000);
-    
+
     }, 3000);
   }
 
-
+  ngOnDestroy() {
+    var highestTimeoutId = setTimeout(";");
+    for (var i = 0; i < highestTimeoutId; i++) {
+      clearTimeout(i);
+    }
+  }
 
   openDialog(dialogName: any) {
     this.dialog.open(dialogName, {
