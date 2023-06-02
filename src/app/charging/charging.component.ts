@@ -1,13 +1,13 @@
-import { SharedService } from './../_services/shared.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
+import { SharedService } from './../_services/shared.service';
+
 
 @Component({
   selector: 'app-charging',
-  templateUrl: './charging.component.html',
-  styleUrls: ['./charging.component.scss']
+  templateUrl: './charging.component.html'
 })
 export class ChargingComponent implements OnInit {
 
