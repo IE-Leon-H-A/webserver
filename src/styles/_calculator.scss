@@ -61,9 +61,43 @@
 
       }
     }
+  }
+}
 
 
+.calculator {
+  display: flex;
+
+
+
+  .numpad {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .calc-button {
+
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      border-right: 1px solid #3b6dae;
+      border-bottom: 1px solid #3b6dae;
+      box-sizing: border-box;
+
+      .mat-button-base {
+        font-size: 58px;
+        font-weight: 700;
+        line-height: 68px;
+        letter-spacing: 0.01em;
+        height: 100px;
+      }
+    }
   }
 
-
+  .add-value-button {
+    width: 195px;
+    background-color: rebeccapurple;
+  }
 }

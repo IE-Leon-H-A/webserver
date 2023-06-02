@@ -62,15 +62,27 @@
             </div>
           </div>
 
-          <p>sdfasdf </p>
-          <p>sdfasdf </p>
-          <p>sdfasdf </p>
-          <p>sdfasdf </p>
-          <p>sdfasdf </p>
-          <p>sdfasdf </p>
-          
+          <div class="calculator">
+            <div class="numpad">
 
+              <ng-container *ngFor="let n of keyboardButtons; let i = index">
+                <div class="calc-button">
+                  <button mat-button>
+                      <span *ngIf="n.value != 'backspace'">
+                        {{n.value}}
+                      </span>
+                      
 
+                  </button>
+                </div>
+                <div class="break-column" *ngIf="(i + 1) % 3 == 0"> </div>
+              </ng-container>
+
+            </div>
+            <div class="add-value-button">
+              Add Value
+            </div>
+          </div>
 
         </mat-card-content>
       </mat-card>
