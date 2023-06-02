@@ -34,6 +34,10 @@ export class AddValueComponent implements OnInit {
   }
 
   numPadPressed(key: any) {
+    if (key === '00' && this.sharedService.priceLimit === '0') {
+      return
+    }
+    
     if (key === 'backspace') {
       if (this.sharedService.priceLimit.length === 1) {
         this.sharedService.priceLimit = '0';
@@ -41,12 +45,15 @@ export class AddValueComponent implements OnInit {
         this.sharedService.priceLimit = this.sharedService.priceLimit.slice(0, -1);
       }
     } else if (this.sharedService.priceLimit.length < 4) {
+
+
       if (this.sharedService.priceLimit === '0') {
         this.sharedService.priceLimit = key;
       } else {
         this.sharedService.priceLimit = this.sharedService.priceLimit + key;
       }
     }
+
     this.calclulateKwh()
   }
 
