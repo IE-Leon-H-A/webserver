@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalComponent } from '../modal/modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +10,8 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   constructor(
-    public router: Router
+    public router: Router,
+    private dialogReference: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -23,6 +26,10 @@ export class HeaderComponent implements OnInit {
     if (this.router.url.includes('/add-value')) {
       this.router.navigateByUrl('/power-select');
     }
+  }
+
+  openDialog(){
+    this.dialogReference.open(ModalComponent);
   }
 
 }

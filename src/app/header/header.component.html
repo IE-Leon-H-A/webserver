@@ -5,7 +5,7 @@
     <div class="header-logo" *ngIf="router.url !== '/home'">
         <img src="../../assets/img/logo.svg" height="45">
     </div>
-    <div class="choose-lang" *ngIf="router.url !== '/home'">
+    <div class="choose-lang" *ngIf="router.url !== '/home'" (click)="openDialog()">
         <img src="../../assets/img/pay-info-btn.svg" height="84">
     </div>
     <div class="choose-lang">
