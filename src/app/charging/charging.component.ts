@@ -14,7 +14,7 @@ export class ChargingComponent implements OnInit {
 
   // Are changed based on user input from pevious page
   price = 1;
-  price_limit = 5;
+  price_limit = 3.4;
   charging_power = 200;
 
   // Hadcoded
@@ -29,6 +29,7 @@ export class ChargingComponent implements OnInit {
   money_spent = 0;
   money_left = 0;
   time_remaining_sec = 0;
+  time_remaining_min = 0;
 
   approx_energy = this.price_limit / this.price;
   // console.log("approx energy: " + String(approx_energy) + " kWh");
@@ -70,8 +71,11 @@ export class ChargingComponent implements OnInit {
         // Redirect
       }
 
-      this.time_remaining_sec = this.approx_time - this.elapsed_time
+      this.time_remaining_sec = (this.approx_time - this.elapsed_time)
       console.log("time remaining: " + this.time_remaining_sec);
+
+      this.time_remaining_min = Math.floor((this.time_remaining_sec / 60));
+      console.log(this.time_remaining_min);
 
       if (this.charging_active_flag === 1) {
         this.myLoop();
