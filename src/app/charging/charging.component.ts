@@ -1,6 +1,7 @@
 import { SharedService } from './../_services/shared.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -41,7 +42,8 @@ export class ChargingComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialog,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private router: Router
   ) {
     this.dialogRef.closeAll();
   }
@@ -70,7 +72,7 @@ export class ChargingComponent implements OnInit {
       // console.log("money spent: " + money_left);
 
       if (this.money_spent > (this.price_limit - 0.05)) {
-        console.log("cost limit reached");
+        // console.log("cost limit reached");
         this.charging_active_flag = 0;
         // Redirect
       }
@@ -83,6 +85,9 @@ export class ChargingComponent implements OnInit {
 
       if (this.charging_active_flag === 1) {
         this.myLoop();
+      }
+      else {
+        this.router.navigateByUrl("/home");
       }
     }, 250)
   }
