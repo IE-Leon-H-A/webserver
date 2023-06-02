@@ -84,10 +84,10 @@ export class ChargingComponent implements OnInit {
       }
 
       this.time_remaining_sec = (this.approx_time - this.elapsed_time - 4)
-      console.log("time remaining: " + this.time_remaining_sec);
+      // console.log("time remaining: " + this.time_remaining_sec);
 
       this.time_remaining_min = Math.floor((this.time_remaining_sec / 60));
-      console.log(this.time_remaining_min);
+      // console.log(this.time_remaining_min);
 
       if (this.charging_active_flag === 1) {
         this.myLoop();
