@@ -90,8 +90,10 @@
 			</mat-card>
 			<mat-card style="height: 600px" class="d-flex justify-content-center align-items-center flex-column"
 				*ngIf="processingPayment">
-				<img src="../../assets/img/payment-loading-icon.svg" class="m-3" height="180" *ngIf="infoText === 'Processing payment'" >
-				<img src="../../assets/img/payment-success.svg" class="m-3" height="180" *ngIf="infoText === 'Payment Succesful'" >
+				<img src="../../assets/img/payment-loading-icon.svg" class="m-3" height="180"
+					*ngIf="infoText === 'Processing payment'">
+				<img src="../../assets/img/payment-success.svg" class="m-3" height="180"
+					*ngIf="infoText === 'Payment Succesful'">
 				<div class="title">
 					{{infoText}}
 				</div>
@@ -99,3 +101,17 @@
 		</div>
 	</div>
 </div>
+
+
+<ng-template #mytemplate>
+	<div class="d-flex justify-content-between align-items-center flex-column" style="height: 100%;">
+
+		<img src="../../assets/img/logo-gray.svg" class="m-3" height="30">
+		<div class="title mb-4" style="font-weight: 400; font-size: 58px;">Start to charge</div>
+		<img src="../../assets/img/start-charge.svg" class="m-3" height="180">
+		<p class="text-center mt-4"> Plug charging cable</p>
+		<p class="text-center mt-2"> to car to start charging </p>
+		<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">Cancel</button>
+
+	</div>
+</ng-template>

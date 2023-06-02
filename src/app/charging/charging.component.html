@@ -1,1 +1,50 @@
-<p>charging works!</p>
+<div class="content">
+	<div class="title m-4 text-center" style="font-weight: bold; font-size: 48px; color: white; ">Charging in progress
+	</div>
+
+	<div class="row mb-4">
+		<div class="col-3">
+			<div class="charging-box">
+				<div class="title">
+					STATE OF CHARG
+				</div>
+				<div class="content">
+					<div>46<small>%</small></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="charging-box">
+				<div class="title">
+					MONEY SPENT
+				</div>
+				<div class="content">
+					<div>46<small>%</small></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="charging-box">
+				<div class="title">
+					CHARGING SPEED
+				</div>
+				<div class="content">
+					<div>46<small>%</small></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="charging-box">
+				<div class="title">
+					REMAINING TIME
+				</div>
+				<div class="content">
+					<div>46<small>%</small></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">
+		Stop charging
+	</button>
+</div>

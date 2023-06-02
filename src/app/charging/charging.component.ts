@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-charging',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChargingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialogRef: MatDialog) {
+
+    this.dialogRef.closeAll();
+  }
 
   ngOnInit(): void {
   }
+
 
 }

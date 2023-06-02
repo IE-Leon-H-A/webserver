@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { SharedService } from './../_services/shared.service';
 
@@ -8,12 +10,16 @@ import { SharedService } from './../_services/shared.service';
 })
 export class PaymentComponent implements OnInit {
 
+  @ViewChild('mytemplate') startToCharge: ElementRef | undefined;
+
   processingPayment = false;
 
   infoText = 'Processing payment'
 
   constructor(
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    public dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -23,10 +29,29 @@ export class PaymentComponent implements OnInit {
 
       setTimeout(() => {
         this.infoText = 'Payment Succesful';
+
+        setTimeout(() => {
+          this.openDialog(this.startToCharge);
+
+          setTimeout(() => {
+            this.router.navigateByUrl('/charging');
+          }, 2000);
+
+        }, 2000);
+
       }, 2000);
-
-
+    
     }, 3000);
+  }
+
+
+
+  openDialog(dialogName: any) {
+    this.dialog.open(dialogName, {
+      width: '1142px',
+      height: '686px',
+    });
+
   }
 
 }
