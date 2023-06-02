@@ -1,3 +1,4 @@
+import { SharedService } from './../_services/shared.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -8,14 +9,14 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./charging.component.scss']
 })
 export class ChargingComponent implements OnInit {
-  
+
   // Exit flag
   charging_active_flag = 1;
 
   // Are changed based on user input from pevious page
   price = 1;
   price_limit = 1;
-  charging_power = 200;
+  charging_power = this.sharedService.power.power;
 
   // Hadcoded
   start_time = new Date().getTime() / 1000;;
@@ -37,7 +38,10 @@ export class ChargingComponent implements OnInit {
   // console.log("approx time: " + String(approx_time) + " sec");
 
 
-  constructor(private dialogRef: MatDialog) {
+  constructor(
+    private dialogRef: MatDialog,
+    private sharedService: SharedService
+  ) {
     this.dialogRef.closeAll();
   }
 
@@ -52,7 +56,7 @@ export class ChargingComponent implements OnInit {
       this.elapsed_time = new Date().getTime() / 1000 - this.start_time;
       // console.log("elapsed time: " + elapsed_time);
 
-      this.trasnfered_kwh = (this.charging_power * this.elapsed_time) / 3600;
+      this.trasnfered_kwh = (this.sharedService.power.power * this.elapsed_time) / 3600;
       // console.log("transfered energy kwh: " + trasnfered_kwh);
 
       this.soc = (this.trasnfered_kwh / this.ev_capacity) * 100 + this.ev_start_soc;
