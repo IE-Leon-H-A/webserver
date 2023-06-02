@@ -27,6 +27,7 @@ export class AddValueComponent implements OnInit {
     public sharedService: SharedService
   ) {
     sharedService.priceLimit = '0';
+    sharedService.calculatedKwh = 0;
   }
 
   ngOnInit(): void {

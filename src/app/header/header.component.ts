@@ -23,16 +23,24 @@ export class HeaderComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }
 
-    if (this.router.url.includes('/add-value')) {
+    if (this.router.url === '/add-value') {
       this.router.navigateByUrl('/power-select');
     }
 
-    if (this.router.url.includes('/payment')) {
+    if (this.router.url === '/payment') {
       this.router.navigateByUrl('/power-select');
+    }
+
+    if (this.router.url === '/payment') {
+      this.router.navigateByUrl('/home');
+    }
+
+    if (this.router.url === '/charging') {
+      this.router.navigateByUrl('/home');
     }
   }
 
-  openDialog(){
+  openDialog() {
     this.dialogReference.open(ModalComponent);
   }
 
