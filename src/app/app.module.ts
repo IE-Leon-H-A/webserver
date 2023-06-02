@@ -12,7 +12,6 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { PowerSelectComponent } from './power-select/power-select.component';
 import { PaymentComponent } from './payment/payment.component';
-import { ModalComponent } from './modal/modal.component';
 import { ChargingComponent } from './charging/charging.component';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { ChargingComponent } from './charging/charging.component';
     PowerSelectComponent,
     AddValueComponent,
     PaymentComponent,
-    ModalComponent,
     ChargingComponent
   ],
   imports: [

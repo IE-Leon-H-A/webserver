@@ -5,10 +5,23 @@
     <div class="header-logo" *ngIf="router.url !== '/home'">
         <img src="../../assets/img/logo.svg" height="45">
     </div>
-    <div class="choose-lang" *ngIf="router.url !== '/home'" (click)="openDialog()">
+    <div class="choose-lang" *ngIf="router.url !== '/home'" (click)="openDialog(modalInfo)">
         <img src="../../assets/img/pay-info-btn.svg" height="84">
     </div>
     <div class="choose-lang">
         <img src="../../assets/img/choose-lang.svg" height="84">
     </div>
 </div>
+
+<ng-template #modalInfo>
+	<div class="d-flex justify-content-between align-items-center flex-column" style="height: 100%;">
+
+		<img src="../../assets/img/logo-gray.svg" class="m-3" height="30">
+		<div class="title mb-4" style="font-weight: 400; font-size: 58px;">Payment info</div>
+        <div style="margin-top: 125px;"></div>
+		<p class="text-center mt-2">Amount that will not be spent will<br>immediately be returned after<br>charging is finished.</p>
+
+		<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" (click)="closeDialog(modalInfo)">Close</button>
+
+	</div>
+</ng-template>
