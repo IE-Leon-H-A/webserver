@@ -4,7 +4,6 @@
   justify-content: space-between;
   align-items: center;
   height: 123px;
-  border-bottom: 1px solid #3b6dae;
   padding: 0 27px;
 
 
@@ -82,8 +81,9 @@
       align-items: center;
       justify-content: center;
       height: 100px;
+      width: 195px;
       border-right: 1px solid #3b6dae;
-      border-bottom: 1px solid #3b6dae;
+      border-top: 1px solid #3b6dae;
       box-sizing: border-box;
 
       .mat-button-base {
@@ -92,6 +92,7 @@
         line-height: 68px;
         letter-spacing: 0.01em;
         height: 100px;
+        width: 100%;
       }
     }
   }

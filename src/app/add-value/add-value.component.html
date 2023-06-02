@@ -68,11 +68,13 @@
               <ng-container *ngFor="let n of keyboardButtons; let i = index">
                 <div class="calc-button">
                   <button mat-button>
-                      <span *ngIf="n.value != 'backspace'">
-                        {{n.value}}
-                      </span>
-                      
+                    <span *ngIf="n.value != 'backspace'">
+                      {{n.value}}
+                    </span>
 
+                    <span *ngIf="n.value === 'backspace'">
+                      <img src="../../assets/img/lightning-blue.svg" height="60">
+                    </span>
                   </button>
                 </div>
                 <div class="break-column" *ngIf="(i + 1) % 3 == 0"> </div>
