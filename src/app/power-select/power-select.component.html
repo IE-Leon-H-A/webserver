@@ -3,7 +3,7 @@
 <div class="content">
   <div class="row">
     <div class="col-6" *ngFor="let power of powers">
-      <div class="card-power" (click)="goToAddValue(power)" >
+      <div class="card-power" (click)="goToAddValue(power)">
         <div class="green-side">
           <div class="top">
             CHARGING SPEED
@@ -23,7 +23,7 @@
           </div>
           <div class="bottom">
             <span class="bigFont">
-              {{power.price}}
+              {{power.price | number: '1.2-2'}}
             </span>
             €
           </div>
