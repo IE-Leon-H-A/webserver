@@ -56,10 +56,7 @@
 							<div class="col-5">
 								<div class="bg-light d-flex align-items-center justify-content-center"
 									style="height: 379px; border-radius: 20px;">
-
-
 									<img src="../../assets/img/payment-terminal-img.svg" class="m-3" height="233">
-
 								</div>
 							</div>
 							<div class="col-7">
@@ -90,8 +87,9 @@
 			</mat-card>
 			<mat-card style="height: 600px" class="d-flex justify-content-center align-items-center flex-column"
 				*ngIf="processingPayment">
-				<img src="../../assets/img/payment-loading-icon.svg" class="m-3" height="180"
-					*ngIf="infoText === 'Processing payment'">
+				<div *ngIf="infoText === 'Processing payment'" class="spinSVG m-3">
+					<img src="../../assets/img/payment-loading-icon.svg" height="180" >
+				</div>
 				<img src="../../assets/img/payment-success.svg" class="m-3" height="180"
 					*ngIf="infoText === 'Payment Succesful'">
 				<div class="title">
