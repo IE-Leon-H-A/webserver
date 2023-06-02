@@ -29,7 +29,7 @@ export class ChargingComponent implements OnInit {
   trasnfered_kwh = 0;
   money_spent = 0;
   money_left = 0;
-  time_remaining = 0;
+  time_remaining_sec = 0;
 
   approx_energy = this.price_limit / this.price;
   // console.log("approx energy: " + String(approx_energy) + " kWh");
@@ -74,8 +74,8 @@ export class ChargingComponent implements OnInit {
         // Redirect
       }
 
-      this.time_remaining = this.approx_time - this.elapsed_time
-      console.log("time remaining: " + this.time_remaining);
+      this.time_remaining_sec = this.approx_time - this.elapsed_time
+      console.log("time remaining: " + this.time_remaining_sec);
 
       if (this.charging_active_flag === 1) {
         this.myLoop();
