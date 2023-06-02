@@ -50,13 +50,16 @@
         <mat-card-content>
 
           <div class="input-calculator">
-            <div class="price-limit">00,00</div>
+            <div class="price-limit">
+              {{priceLimit}}.00
+            </div>
             <div class="currency">€</div>
             <div class="limitator"></div>
             <div class="approx-charge">
               <div class="top">Approx charge</div>
               <div class="bottom">
-                <div class="power">000</div>
+                <div class="power" *ngIf="calculatedKwh > 0">{{calculatedKwh | number: '1.2-2'}}</div>
+                <div class="power" *ngIf="calculatedKwh === 0">000</div>
                 <div class="unit">kWh</div>
               </div>
             </div>
@@ -67,13 +70,13 @@
 
               <ng-container *ngFor="let n of keyboardButtons; let i = index">
                 <div class="calc-button">
-                  <button mat-button>
+                  <button mat-button (click)="numPadPressed(n.value)">
                     <span *ngIf="n.value != 'backspace'">
                       {{n.value}}
                     </span>
 
                     <span *ngIf="n.value === 'backspace'">
-                      <img src="../../assets/img/lightning-blue.svg" height="60">
+                      <img src="../../assets/img/numpad-backspace.svg" height="38">
                     </span>
                   </button>
                 </div>
@@ -81,8 +84,10 @@
               </ng-container>
 
             </div>
-            <div class="add-value-button">
-              Add Value
+            <div class="add-value-button" [routerLink]="['/payment']" routerLinkActive="router-link-active">
+              <span>
+                Add Value
+              </span>
             </div>
           </div>
 
