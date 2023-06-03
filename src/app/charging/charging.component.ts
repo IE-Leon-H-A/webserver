@@ -49,7 +49,11 @@ export class ChargingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.myLoop()
+    setTimeout(() => {
+      this.myLoop()
+    }, 5000);
+
+    // this.myLoop()
   }
 
   randomInteger(min: any, max: any) {

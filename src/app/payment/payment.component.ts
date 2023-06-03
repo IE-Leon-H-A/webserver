@@ -37,7 +37,7 @@ export class PaymentComponent implements OnInit {
 
           setTimeout(() => {
             this.router.navigateByUrl('/charging');
-          }, 2000);
+          }, 5000);
 
         }, 2000);
 
