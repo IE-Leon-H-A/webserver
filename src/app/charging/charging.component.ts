@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { SharedService } from './../_services/shared.service';
+import { SharedService } from '../_services/shared.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class ChargingComponent implements OnInit {
   charging_power = this.sharedService.power.power;
 
   // Hadcoded
-  start_time = new Date().getTime() / 1000;;
+  start_time = new Date().getTime() / 1000;
   ev_capacity = 40;
   ev_start_soc = this.randomInteger(30, 50);
 
