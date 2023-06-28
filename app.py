@@ -47,8 +47,11 @@ def background_checks():
         # evse_state = evse_reader.get_evse_state()[1]
         # redirect_request = evse_reader.get_redirect_request()
 
-        if dev_cntr % 2 == 0:
+        if dev_cntr % 3 == 1:
             estop = 1
+            evse = 5
+        elif dev_cntr % 3 == 2:
+            estop = 0
             evse = 5
         else:
             estop = 0
