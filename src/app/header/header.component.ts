@@ -85,49 +85,77 @@ export class HeaderComponent implements OnInit {
       console.log(message);
       let update = JSON.parse(message);
 
-      if (update["estop"] === 1) {
-        // estop active
-        if (estop_state != update["secc"]) {
-          estop_state = 1;
-          this.openDialog(this.eStopActive);
-          console.log("opened modal")
-        } else {
-          // pass, eastop is active and modal is visible
-        }
-      } else if (update["estop"] === 0) {
-        if (estop_state != update["secc"]) {
-          estop_state = 0;
-          // estop condition disappeared, hide modal and redirect
+      if (update["estop"] != estop_state) {
+        estop_state = update["estop"];
+
+        if (estop_state === 0) {
           this.dialog.closeAll();
           this.router.navigateByUrl("/home");
-        } else {
-          // pass, estop is not active and modal is not visible
+        }
+        else if (estop_state === 1) {
+          console.log("opened estop modal");
+          this.openDialog(this.eStopActive);
         }
       }
 
-      if (evse_state === 0) {
-        if (update["evse"] === 0) {
-          if (evse_state != update["evse"]) {
-            evse_state = 0;
-            this.dialog.closeAll();
-            this.openDialog(this.serviceUnavailable);
-          } else {
-            evse_state = update["evse"];
-            this.dialog.closeAll();
-          }
-        } else if (update["secc"] === 12) {
-          if (secc_state != update["evse"]) {
-            secc_state = update["secc"];
-            this.dialog.closeAll();
-            this.openDialog(this.serviceUnavailable);
-          } else {
-            evse_state = update["secc"];
-            this.dialog.closeAll();
-          }
-        } else {
-          console.log("No action or Unknown data");
+      else if (update["evse"] != evse_state) {
+        estop_state = update["evse"];
+
+        if (evse_state === 0) {
+          this.dialog.closeAll();
+          this.router.navigateByUrl("/home");
+        }
+        else {
+          console.log("opened unavailable modal");
+          this.openDialog(this.serviceUnavailable);
         }
       }
+
+      // if (update["estop"] === 1) {
+      //   // estop active
+      //   if (estop_state != update["estop"]) {
+      //     estop_state = 1;
+      //     this.openDialog(this.eStopActive);
+      //     console.log("opened modal")
+      //   } else {
+      //     // pass, eastop is active and modal is visible
+      //   }
+      // }
+      // if (update["estop"] === 0) {
+      //   if (estop_state != update["estop"]) {
+      //     estop_state = 0;
+      //     // estop condition disappeared, hide modal and redirect
+      //     this.dialog.closeAll();
+      //     this.router.navigateByUrl("/home");
+      //   } else {
+      //     // pass, estop is not active and modal is not visible
+      //   }
+      // }
+      //
+      // if (update["evse"] === 0) {
+      //   if (evse_state != 0) {
+      //     evse_state = 0;
+      //     this.openDialog(this.serviceUnavailable);
+      //   } else {
+      //     evse_state = update["evse"];
+      //     this.dialog.closeAll();
+      //     this.router.navigateByUrl("/home");
+      //   }
+      // } else {
+      //   console.log("evse not in state 0");
+      // }
+      // if (update["secc"] === 12) {
+      //   if (secc_state != update["evse"]) {
+      //     secc_state = update["secc"];
+      //     this.dialog.closeAll();
+      //     this.openDialog(this.serviceUnavailable);
+      //   } else {
+      //     evse_state = update["secc"];
+      //     this.dialog.closeAll();
+      //   }
+      // } else {
+      //   console.log("No action or Unknown data");
+      // }
     })
   }
 }
