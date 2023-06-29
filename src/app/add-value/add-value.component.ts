@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-import { SharedService } from './../_services/shared.service';
+import { SharedService } from '../_services/shared.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-value',
@@ -24,7 +24,8 @@ export class AddValueComponent implements OnInit {
   ];
 
   constructor(
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    private router: Router
   ) {
     sharedService.priceLimit = '0';
     sharedService.calculatedKwh = 0;
@@ -37,7 +38,7 @@ export class AddValueComponent implements OnInit {
     if (key === '00' && this.sharedService.priceLimit === '0') {
       return
     }
-    
+
     if (key === 'backspace') {
       if (this.sharedService.priceLimit.length === 1) {
         this.sharedService.priceLimit = '0';
@@ -62,5 +63,8 @@ export class AddValueComponent implements OnInit {
     this.sharedService.calculatedKwh = Number(this.sharedService.priceLimit) / this.sharedService.power.price
   }
 
-
+  goToPayment(price_limit: any) {
+    this.sharedService.sock.emit("requested_price_limit", {"price_limit": price_limit});
+    this.router.navigateByUrl('/payment');
+  }
 }

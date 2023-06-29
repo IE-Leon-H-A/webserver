@@ -21,6 +21,13 @@ def catch_all(path):
 
 @socketio.on("requested_charging_power")
 def requested_charging_power(message):
+    # todo: shared memory write
+    print(message)
+
+
+@socketio.on("requested_price_limit")
+def requested_price_limit(message):
+    # todo: shared memory write
     print(message)
 
 
