@@ -31,6 +31,27 @@ def requested_price_limit(message):
     print(message)
 
 
+@socketio.on("card_tap_confirmation")
+def card_tap_confirmation():
+    # todo: televend ping-pong
+    sleep(2)
+    socketio.emit("card_tap_confirmation", 1)
+
+
+@socketio.on("payment_processing")
+def payment_processing():
+    # todo: televend ping-pong
+    sleep(2)
+    socketio.emit("payment_processing", 1)
+
+
+@socketio.on("vehicle_plugin_status")
+def vehicle_plugin_status():
+    # todo: shm reading until newSessionMessage
+    sleep(3)
+    socketio.emit("vehicle_plugin_status", 1)
+
+
 @socketio.on("start_background_checks")
 def status_change():
     global background_task
