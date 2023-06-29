@@ -40,7 +40,7 @@
         </mat-card-content>
       </mat-card>
 
-      <button class="w-100 mt-4 big-white-btn" [routerLink]="['/home']" mat-raised-button>Cancel</button>
+      <button disabled class="w-100 mt-4 big-white-btn" [routerLink]="['/home']" mat-raised-button>Cancel</button>
     </div>
 
     <div class="col-8">
@@ -107,8 +107,8 @@
     <img src="../../assets/img/logo-gray.svg" class="m-3" height="30">
     <div class="title mb-4" style="font-weight: 400; font-size: 58px;">Start to charge</div>
     <img src="../../assets/img/start-charge.svg" class="m-3" height="180">
-    <p class="text-center mt-4"> Plug charging cable</p>
-    <p class="text-center mt-2"> to car to start charging </p>
+    <p class="text-center mt-4" style="font-weight: 400; font-size: 40px;">Plug charging cable</p>
+    <p class="text-center mt-4" style="font-weight: 400; font-size: 40px;">to car to start charging</p>
     <button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">Cancel & Return Funds</button>
 
   </div>
