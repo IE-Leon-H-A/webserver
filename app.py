@@ -19,10 +19,9 @@ def catch_all(path):
     return app.send_static_file("index.html")
 
 
-# @socketio.on("request")
-# def default_endpoint(message):
-#     print(message)
-#     socketio.emit("response", "hello client")
+@socketio.on("requested_charging_power")
+def requested_charging_power(message):
+    print(message)
 
 
 @socketio.on("start_background_checks")
@@ -73,28 +72,28 @@ def background_checks():
         # evse_state = evse_reader.get_evse_state()[1]
         # redirect_request = evse_reader.get_redirect_request()
 
-        socketio.emit(
-          "status_update",
-          json.dumps(d0),
-        )
-        sleep(3)
-
-        socketio.emit(
-            "status_update",
-            json.dumps(d1),
-        )
-        sleep(3)
-
-        socketio.emit(
-            "status_update",
-            json.dumps(d2),
-        )
-        sleep(3)
-
-        socketio.emit(
-            "status_update",
-            json.dumps(d3),
-        )
+        # socketio.emit(
+        #   "status_update",
+        #   json.dumps(d0),
+        # )
+        # sleep(3)
+        #
+        # socketio.emit(
+        #     "status_update",
+        #     json.dumps(d1),
+        # )
+        # sleep(3)
+        #
+        # socketio.emit(
+        #     "status_update",
+        #     json.dumps(d2),
+        # )
+        # sleep(3)
+        #
+        # socketio.emit(
+        #     "status_update",
+        #     json.dumps(d3),
+        # )
         sleep(3)
 
 

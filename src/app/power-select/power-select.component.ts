@@ -38,6 +38,7 @@ export class PowerSelectComponent implements OnInit {
 
   goToAddValue(power: any) {
     this.sharedService.power = power;
+    this.sharedService.sock.emit("requested_charging_power", power);
     this.router.navigateByUrl('/add-value');
   }
 
