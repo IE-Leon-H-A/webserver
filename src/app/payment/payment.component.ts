@@ -10,7 +10,7 @@ import { SharedService } from './../_services/shared.service';
 })
 export class PaymentComponent implements OnInit {
 
-  @ViewChild('mytemplate') startToCharge: ElementRef | undefined;
+  @ViewChild('plugIn') startToCharge: ElementRef | undefined;
 
   processingPayment = false;
 
