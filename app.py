@@ -6,15 +6,15 @@ import json
 from time import sleep
 
 # app = Flask(__name__)
-app = Flask(__name__, static_folder='dist/punionica', static_url_path="/")
+app = Flask(__name__, static_folder="dist/punionica", static_url_path="/")
 app.config["SECRET_KEY"] = "asdf"
 socketio = SocketIO(app)
 
 background_task = 0
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
 def catch_all(path):
     return app.send_static_file("index.html")
 
@@ -39,7 +39,33 @@ def background_checks():
     global background_task
     background_task = 1
 
-    dev_cntr = 0
+    d0 = dict(
+      estop=0,
+      secc="secc_state",
+      evse=5,
+      redirect_request="redirect_request",
+    )
+
+    d1 = dict(
+        estop=1,
+        secc="secc_state",
+        evse=5,
+        redirect_request="redirect_request",
+    )
+
+    d2 = dict(
+        estop=0,
+        secc="secc_state",
+        evse=5,
+        redirect_request="redirect_request",
+    )
+
+    d3 = dict(
+        estop=0,
+        secc="secc_state",
+        evse=0,
+        redirect_request="redirect_request",
+    )
 
     while True:
         # estop_state = gpio.e_stop_status()
@@ -47,32 +73,28 @@ def background_checks():
         # evse_state = evse_reader.get_evse_state()[1]
         # redirect_request = evse_reader.get_redirect_request()
 
-        if dev_cntr % 3 == 1:
-            estop = 1
-            evse = 5
-        elif dev_cntr % 3 == 2:
-            estop = 0
-            evse = 5
-        else:
-            estop = 0
-            evse = 0
-
-        # estop = 1
-        # evse = 5
+        socketio.emit(
+          "status_update",
+          json.dumps(d0),
+        )
+        sleep(3)
 
         socketio.emit(
             "status_update",
-            json.dumps(
-                dict(
-                    estop=estop,
-                    secc="secc_state",
-                    evse=evse,
-                    redirect_request="redirect_request",
-                )
-            ),
+            json.dumps(d1),
         )
-        # sleep(0.25)
-        dev_cntr += 1
+        sleep(3)
+
+        socketio.emit(
+            "status_update",
+            json.dumps(d2),
+        )
+        sleep(3)
+
+        socketio.emit(
+            "status_update",
+            json.dumps(d3),
+        )
         sleep(3)
 
 
