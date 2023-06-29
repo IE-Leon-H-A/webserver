@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {io} from "socket.io-client";
+import { SharedService } from '../_services/shared.service';
 
 
 @Component({
@@ -13,11 +13,12 @@ export class HeaderComponent implements OnInit {
   @ViewChild('serviceUnavailable') serviceUnavailable: ElementRef | undefined;
   @ViewChild('eStopActive') eStopActive: ElementRef | undefined;
 
-  sock = io();
+  // sock = io();
 
   constructor(
     public router: Router,
     private dialog: MatDialog,
+    private sharedService: SharedService,
   ) {
   }
 
@@ -62,7 +63,7 @@ export class HeaderComponent implements OnInit {
   }
 
   startBackgroundChecks(): void {
-    this.sock.emit("start_background_checks");
+    this.sharedService.sock.emit("start_background_checks");
     console.log("requested continuous background evse status checks");
   }
 
@@ -81,7 +82,7 @@ export class HeaderComponent implements OnInit {
     let evse_state = 0;
     let secc_state = 0;
 
-    this.sock.on('status_update', (message: any) => {
+    this.sharedService.sock.on('status_update', (message: any) => {
       console.log(message);
       let update = JSON.parse(message);
 

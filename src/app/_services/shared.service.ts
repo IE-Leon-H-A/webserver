@@ -1,10 +1,13 @@
 import { Router, UrlTree } from '@angular/router';
 import { Injectable } from '@angular/core';
+import {io} from "socket.io-client";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+
+  sock = io();
 
   power = {
     power: 50,
@@ -12,7 +15,6 @@ export class SharedService {
   };
 
   priceLimit = '0';
-
   calculatedKwh = 0;
 
   constructor(
