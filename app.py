@@ -95,10 +95,11 @@ def vehicle_plugin_status():
     while True:
         secc_state = modules.secc_reader.advanticsControllerStatus().data
         if secc_state not in [2, 3, 4]:
-            print(f"SECC in state [{secc_state}] which != [2, 3, 4]")
+            logger.debug(f"SECC in state [{secc_state}] which != [2, 3, 4]")
             sleep(0.5)
         else:
             socketio.emit("vehicle_plugin_status", 1)
+            break
 
 
 @socketio.on("charge_session_telemetry_request")
@@ -121,6 +122,8 @@ def charge_session_telemetry():
     #   * money left                      [eur]
     #   * time remaining                  [sec] -> (include logic for power ramp-up/downs)
 
+    # ! todo: vehicle SoC get from secc_reader.charging_loop message
+
     socketio.emit("charge_session_telemetry",
                   json.dumps(
                       dict(
@@ -131,34 +134,9 @@ def charge_session_telemetry():
 
 @socketio.on("charging_stop")
 def charging_stop():
-    # todo: send secc message to request charge stop
-    stop_confirm = True  # todo: based on secc status check
-
-    if stop_confirm:
-        socketio.emit("charging_stop", json.dumps(
-          dict(
-              charging_stopped="true"
-          )
-        ))
-    else:
-        # todo: implement timeout
-        socketio.emit("charging_stop", json.dumps(
-          dict(
-            charging_stopped="false"
-          )
-        ))
-
-    # while True:
-    #     soc = secc_reader.chargingLoop(break_on_old_timestamp=False)["stateOfCharge"]
-    #     session_energy_entries = evse_reader.get_charging_sess_entries()
-    #
-    #     # todo: implement riemann sum to approximate spent energy and total cost
-    #
-    #     socketio.emit(
-    #         "charge_session_telemetry_response",
-    #         json.dumps(dict(ev_soc=soc, session_energy_entries=session_energy_entries)),
-    #     )
-    #     sleep(1)
+    modules.secc_writer.sequenceControl(control_mode=65536)
+    # todo: based on secc status check
+    socketio.emit("charging_stop", 1)
 
 
 @socketio.on("start_background_checks")
