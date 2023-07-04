@@ -34,22 +34,82 @@ def requested_price_limit(message):
 @socketio.on("card_tap_confirmation")
 def card_tap_confirmation():
     # todo: televend ping-pong
-    sleep(2)
+    sleep(1)
     socketio.emit("card_tap_confirmation", 1)
 
 
 @socketio.on("payment_processing")
 def payment_processing():
     # todo: televend ping-pong
-    sleep(2)
+    sleep(1)
     socketio.emit("payment_processing", 1)
 
 
 @socketio.on("vehicle_plugin_status")
 def vehicle_plugin_status():
-    # todo: shm reading until newSessionMessage
-    sleep(3)
+    # todo: shm reading until newSessionMessage + timeout
+    sleep(1)
     socketio.emit("vehicle_plugin_status", 1)
+
+
+@socketio.on("charge_session_telemetry_request")
+def charge_session_telemetry():
+    # todo: add check and exit if price limit reached -> FE has open ws callback for charging stop
+    # todo: add check and exit if SoC == 100%         -> FE has open ws callback for charging stop
+
+    # todo: data required for all calcs:
+    #   * charging start time             [system clock secs] - NOT DATE STRING
+    #   * charging stop time              [system clock secs] - NOT DATE STRING
+    #   * active charging power           [kW]
+    #   * EV start SoC (chargeLoop)       [%]
+    #   * EV present SoC (chargeLoop)     [%]
+    #   * user price limit                [eur]
+
+    # todo: required calcs based on colleted data:
+    #   * elapsed time calc               [system clock secs] - NOT DATE STRING
+    #   * transfered energy               [kWh]
+    #   * money spent                     [eur]
+    #   * money left                      [eur]
+    #   * time remaining                  [sec] -> (include logic for power ramp-up/downs)
+
+    socketio.emit("charge_session_telemetry",
+                  json.dumps(
+                      dict(
+                          hello="world"
+                      )
+                  ))
+
+
+@socketio.on("charging_stop")
+def charging_stop():
+    # todo: send secc message to request charge stop
+    stop_confirm = True  # todo: based on secc status check
+
+    if stop_confirm:
+        socketio.emit("charging_stop", json.dumps(
+          dict(
+              charging_stopped="true"
+          )
+        ))
+    else:
+        # todo: implement timeout
+        socketio.emit("charging_stop", json.dumps(
+          dict(
+            charging_stopped="false"
+          )
+        ))
+
+    # while True:
+    #     soc = secc_reader.chargingLoop(break_on_old_timestamp=False)["stateOfCharge"]
+    #     session_energy_entries = evse_reader.get_charging_sess_entries()
+    #
+    #     # todo: implement riemann sum to approximate spent energy and total cost
+    #
+    #     socketio.emit(
+    #         "charge_session_telemetry_response",
+    #         json.dumps(dict(ev_soc=soc, session_energy_entries=session_energy_entries)),
+    #     )
+    #     sleep(1)
 
 
 @socketio.on("start_background_checks")
