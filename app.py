@@ -1,6 +1,7 @@
+import json
 import time
 from time import sleep
-from flask import Flask
+from flask import Flask, render_template
 from flask_socketio import SocketIO
 
 from punionica.modules.evse import EVSEReader, EVSEWriter
@@ -42,6 +43,25 @@ def catch_all(path):
     return app.send_static_file("index.html")
 
 
+@app.route("/battery")
+def battery():
+    return render_template("battery_cabinet.html")
+
+
+@socketio.on("battery_data_request")
+def data_request():
+    data_dict = dict()
+    for i, cell in enumerate(modules.bms_reader.addresses_reference.keys()):
+        if i + 1 <= 366:
+            value = modules.bms_reader.read_memory(address=cell, field_has_timestamp=False).value
+            data_dict[i + 1] = int().from_bytes(value, byteorder="big", signed=True)
+        else:
+            pass
+    socketio.emit('battery_data_response', json.dumps(
+        data_dict
+    ))
+
+
 @socketio.on("requested_charging_power")
 def requested_charging_power(message):
     modules.evse_writer.user_requested_charging_power(power=message["power"])
@@ -72,23 +92,9 @@ def payment_processing():
 
 @socketio.on("vehicle_plugin_status")
 def vehicle_plugin_status():
-    # All values are expressed in ms as modules parsers expand time from seconds to miliseconds [time.time() * 1000]
-    timeout_start = time.time() * 1000
-    timeout_limit = 15000  # Timeout limit of 15 seconds
-
-    while True:
+    while modules.secc_reader.advanticsControllerStatus().data not in [2, 3, 4]:
         sleep(0.5)
-        if (timeout_counter := time.time() * 1000 - timeout_start) > timeout_limit:
-            logger.error(
-                f"EVSE did not transition to state 'Charging' for {timeout_counter / 1000} sec"
-            )
-        if state := modules.evse_reader.evse_state() != 4:
-            logger.debug(f"EVSE not in 'Charge' state, EVSE in state: {state}")
-            continue
-
-        else:
-            logger.debug("EVSE in state 'Charge'")
-            socketio.emit("vehicle_plugin_status", 1)
+    socketio.emit("vehicle_plugin_status", 1)
 
 
 @socketio.on("charge_session_telemetry_request")
@@ -227,7 +233,7 @@ def background_checks():
 if __name__ == "__main__":
     try:
         # app.run(host="0.0.0.0", debug=False)
-        socketio.run(app=app, debug=True, host="0.0.0.0", allow_unsafe_werkzeug=True)
+        socketio.run(app=app, debug=False, host="0.0.0.0", allow_unsafe_werkzeug=True)
 
     except Exception as err:
         logger.error(err)

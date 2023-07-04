@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Table with Divs</title>
+  <style>
+    body {
+      text-align: center;
+      margin: 0;
+    }
+
+    #main {
+      width: 2100px;
+      margin: auto;
+    }
+
+    #table-container {
+      height: 800px;
+    }
+
+    #toggle_container {
+      width: 100%;
+    }
+
+    #alerts {
+      width: 100%;
+      margin: 5px 0;
+      text-align: center;
+    }
+
+    #thresholds {
+      border-collapse: collapse;
+      margin: 15px 0;
+    {#margin: 5px auto;#} width: 100%;
+    {#width: 100%;#} text-align: left;
+    }
+
+    table {
+      table-layout: fixed;
+      border-collapse: collapse;
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    tr {
+      width: 100%;
+      border: 1px solid black;
+    }
+
+    td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<div id="main">
+  <div id="thresholds">
+    <label for="ov_threshold">OV threshold =></label>
+    <input type="text" id="ov_threshold">
+    <label style="padding-left: 50px" for="uv_threshold">UV threshold <=</label>
+    <input type="text" id="uv_threshold">
+
+    <div id="toggle_container" style="display: inline; padding-left: 50px">
+      <label for="resolution_switch"></label>
+      <input type="checkbox" id="resolution_switch" onclick="changeResolution()">
+      <label for="resolution">Toggle for HMI screen size</label>
+    </div>
+  </div>
+  <div id="table-container"></div>
+  <div id="alerts">
+    <span>status1: </span><span id="321" style="margin-right: 30px"></span>
+    <span>status2: </span><span id="322" style="margin-right: 30px"></span>
+    <span>status3: </span><span id="323" style="margin-right: 30px"></span>
+    <span>fmea1: </span><span id="324" style="margin-right: 30px"></span>
+    <span>fmea2: </span><span id="325" style="margin-right: 30px"></span>
+    <span>alrtsum: </span><span id="326" style="margin-right: 30px"></span>
+    <span>alrtovcell: </span><span id="327" style="margin-right: 30px"></span>
+    <span>alrtuvcell: </span><span id="328" style="margin-right: 30px"></span>
+    <span>alrtauxprtctreg: </span><span id="329" style="margin-right: 30px"></span>
+    <span>alrtauxov: </span><span id="330" style="margin-right: 30px"></span>
+    <span>alrtauxuv: </span><span id="331" style="margin-right: 30px"></span>
+    <span>alrtcompov: </span><span id="332" style="margin-right: 30px"></span>
+    <span>alrtcompuv: </span><span id="333" style="margin-right: 30px"></span>
+    <span>alrtcompauxov: </span><span id="334" style="margin-right: 30px"></span>
+    <span>alrtcompauxuv: </span><span id="335" style="margin-right: 30px"></span>
+    <span>alrtbalsw: </span><span id="336" style="margin-right: 30px"></span>
+  </div>
+</div>
+<script>
+  function changeResolution() {
+    let checkBox = document.getElementById("resolution_switch");
+    if (checkBox.checked === true) {
+      document.getElementById("main").style.width = "1250px";
+      document.getElementById("main").style.fontSize = "small";
+      document.getElementById("table-container").style.height = "700px";
+    } else {
+      document.getElementById("main").style.width = "2100px";
+      document.getElementById("main").style.fontSize = "medium";
+      document.getElementById("table-container").style.height = "800px";
+    }
+  }
+
+  function generateTable() {
+    const table = document.createElement("table");
+    let idCount = 320;
+    let tempCount = 366;
+    for (let i = 0; i < 20; i++) {
+      const row = document.createElement("tr");
+      if (i % 2 !== 0) {
+        for (let j = 0; j < 32; j++) {
+          const cell = document.createElement("td");
+          cell.className = "voltage_cells";
+          const cell_number_div = document.createElement("div");
+          const voltage_value_div = document.createElement("div");
+          cell_number_div.id = "string_position_" + String(idCount);
+          cell_number_div.innerHTML = "#" + idCount;
+          voltage_value_div.id = String(idCount);
+          voltage_value_div.innerHTML = "N/A";
+          cell.appendChild(cell_number_div);
+          cell.appendChild(voltage_value_div);
+          row.appendChild(cell);
+          idCount--;
+        }
+      } else {
+        for (let j = 0; j < 3; j++) {
+          const temp = document.createElement("td");
+          temp.setAttribute("colSpan", "10");
+          temp.className = "temp_cells";
+          const temp_number_div = document.createElement("div");
+          const temp_value_div = document.createElement("div");
+          temp_number_div.id = "temp_position_" + String(idCount);
+          temp_number_div.innerHTML = "T" + String(tempCount - 336);
+          temp_value_div.id = String(tempCount);
+          temp_value_div.innerHTML = "N/A";
+          temp.appendChild(temp_number_div);
+          temp.appendChild(temp_value_div);
+          row.appendChild(temp);
+          tempCount--;
+        }
+      }
+      table.appendChild(row);
+    }
+    return table;
+  }
+</script>
+<script type="module">
+  import {get_sock_object} from "./socketio/utils.js";
+
+  const tableContainer = document.getElementById("table-container");
+  tableContainer.appendChild(generateTable());
+
+  // Initial values
+  document.getElementById("ov_threshold").value = 3.4
+  document.getElementById("uv_threshold").value = 3.1
+
+  let socket = get_sock_object();
+
+  socket.on('battery_data_response', function (data) {
+    let data_obj = JSON.parse(data);
+
+    console.log("socketio event @" + String(Date.now()));
+    {#console.log(data_obj);#}
+
+    Object.keys(data_obj).forEach(function (key) {
+      let cell_box = document.getElementById(key);
+      let value = parseInt(data_obj[key]) / 1000;
+
+      {#console.log(value);#}
+
+      if (value === -0.001) {
+        cell_box.innerHTML = String("N/A")
+      } else {
+        cell_box.innerHTML = String(value)
+      }
+
+      if (key <= 320) {
+        // Coloring based on UV/OV voltage thresholds
+        if (value === -0.001) {
+          cell_box.style.backgroundColor = "#ffffff";
+        } else if (value >= document.getElementById("ov_threshold").value) {
+          cell_box.style.backgroundColor = "#ff9999";
+        } else if (value <= document.getElementById("uv_threshold").value) {
+          cell_box.style.backgroundColor = "#cceeff";
+        } else {
+          cell_box.style.backgroundColor = "#ffffff";
+        }
+      }
+    });
+  });
+
+  function getData() {
+    socket.emit('battery_data_request');
+
+    setTimeout(() => {
+      getData();
+    }, 1000);
+  }
+
+  getData();
+
+</script>
+</body>
+</html>
