@@ -92,9 +92,13 @@ def payment_processing():
 
 @socketio.on("vehicle_plugin_status")
 def vehicle_plugin_status():
-    while modules.secc_reader.advanticsControllerStatus().data not in [2, 3, 4]:
-        sleep(0.5)
-    socketio.emit("vehicle_plugin_status", 1)
+    while True:
+        secc_state = modules.secc_reader.advanticsControllerStatus().data
+        if secc_state not in [2, 3, 4]:
+            print(f"SECC in state [{secc_state}] which != [2, 3, 4]")
+            sleep(0.5)
+        else:
+            socketio.emit("vehicle_plugin_status", 1)
 
 
 @socketio.on("charge_session_telemetry_request")
