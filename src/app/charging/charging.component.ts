@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { SharedService } from '../_services/shared.service';
+import {jsDocComment} from "@angular/compiler";
 
 
 @Component({
@@ -49,64 +50,93 @@ export class ChargingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.populateReceivedTelemetry();
     setTimeout(() => {
-      this.myLoop()
-    }, 5000);
-
-    // this.myLoop()
+      this.requestChargingTelemetry()
+    }, 2000);
+    this.chargingStop();
   }
 
   randomInteger(min: any, max: any) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  myLoop() {
-
-    setTimeout(() => {
-
-      this.elapsed_time = new Date().getTime() / 1000 - this.start_time;
-      // console.log("elapsed time: " + elapsed_time);
-
-      this.trasnfered_kwh = (this.sharedService.power.power * this.elapsed_time) / 3600;
-      // console.log("transfered energy kwh: " + trasnfered_kwh);
-
-      this.soc = (this.trasnfered_kwh / this.ev_capacity) * 100 + this.ev_start_soc;
-      // console.log("soc: " + soc);
-
-      this.money_spent = this.trasnfered_kwh / this.price;
-      // console.log("money spent: " + money_spent);
-
-      this.money_left = this.price_limit - this.money_spent;
-      // console.log("money spent: " + money_left);
-
-      if (this.money_spent > (this.price_limit - 0.05)) {
-        // console.log("cost limit reached");
-        this.charging_active_flag = 0;
-        // Redirect
-      }
-
-      if (this.soc >= 99) {
-        // console.log("cost limit reached");
-        this.charging_active_flag = 0;
-        // Redirect
-      }
-
-      this.time_remaining_sec = (this.approx_time - this.elapsed_time - 4)
-      // console.log("time remaining: " + this.time_remaining_sec);
-
-      this.time_remaining_min = Math.floor((this.time_remaining_sec / 60));
-      // console.log(this.time_remaining_min);
-
-      if (this.charging_active_flag === 1) {
-        this.myLoop();
-      }
-      else {
-        this.router.navigateByUrl("/home");
-      }
-    }, 250)
+  requestChargingStop() {
+    this.sharedService.sock.emit("charging_stop");
   }
 
+  chargingStop() {
+    this.sharedService.sock.on('charging_stop', (message: any) => {
+      let data = JSON.parse(message);
+      console.log(data);
+      if (data["charging_stopped"] === 'true'){
+          this.router.navigateByUrl("/home");
+        }
+        else {
+          console.log("backed did not succeed to stop charging");
+        }
+      })
+  }
+
+  populateReceivedTelemetry() {
+    this.sharedService.sock.on('charge_session_telemetry', (message: any) => {
+        console.log(message);
+      })
+
+  }
+
+  requestChargingTelemetry() {
+
+    setTimeout(() => {
+      this.sharedService.sock.emit("charge_session_telemetry_request");
+
+      if (this.router.url === "/charging") {
+        this.requestChargingTelemetry();
+      }
+    }, 250)
 
 
-
+    // setTimeout(() => {
+    //
+    //   this.elapsed_time = new Date().getTime() / 1000 - this.start_time;
+    //   // console.log("elapsed time: " + elapsed_time);
+    //
+    //   this.trasnfered_kwh = (this.sharedService.power.power * this.elapsed_time) / 3600;
+    //   // console.log("transfered energy kwh: " + trasnfered_kwh);
+    //
+    //   this.soc = (this.trasnfered_kwh / this.ev_capacity) * 100 + this.ev_start_soc;
+    //   // console.log("soc: " + soc);
+    //
+    //   this.money_spent = this.trasnfered_kwh / this.price;
+    //   // console.log("money spent: " + money_spent);
+    //
+    //   this.money_left = this.price_limit - this.money_spent;
+    //   // console.log("money spent: " + money_left);
+    //
+    //   if (this.money_spent > (this.price_limit - 0.05)) {
+    //     // console.log("cost limit reached");
+    //     this.charging_active_flag = 0;
+    //     // Redirect
+    //   }
+    //
+    //   if (this.soc >= 99) {
+    //     // console.log("soc limit reached");
+    //     this.charging_active_flag = 0;
+    //     // Redirect
+    //   }
+    //
+    //   this.time_remaining_sec = (this.approx_time - this.elapsed_time - 4)
+    //   // console.log("time remaining: " + this.time_remaining_sec);
+    //
+    //   this.time_remaining_min = Math.floor((this.time_remaining_sec / 60));
+    //   // console.log(this.time_remaining_min);
+    //
+    //   if (this.charging_active_flag === 1) {
+    //     this.request_charging_telemetry();
+    //   }
+    //   else {
+    //     this.router.navigateByUrl("/home");
+    //   }
+    // }, 250)
+  }
 }

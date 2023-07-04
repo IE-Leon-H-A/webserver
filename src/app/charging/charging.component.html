@@ -55,7 +55,8 @@
 			</div>
 		</div>
 	</div>
-	<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">
+	<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" (click)="requestChargingStop()">
+<!--	<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">-->
 		Stop charging
 	</button>
 </div>
