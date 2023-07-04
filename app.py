@@ -1,11 +1,34 @@
-import os
-from flask import Flask, send_from_directory, request
-from flask import render_template
-from flask_socketio import SocketIO
-import json
+import time
 from time import sleep
+from flask import Flask
+from flask_socketio import SocketIO
 
-# app = Flask(__name__)
+from punionica.modules.evse import EVSEReader, EVSEWriter
+from punionica.modules.gpio import ControlGPIO
+from punionica.modules.bp25 import BP25Reader, BP25Writer
+from punionica.modules.secc import SECCReader, SECCWriter
+from punionica.modules.lb1024 import LB1024Reader, LB1024Writer
+from punionica.modules.bms import BmsReader, BmsWriter
+from punionica.statemachines.module_packet_definition import ModulesPacket
+
+from punionica.webserver import logger
+
+modules = ModulesPacket(
+    secc_reader=SECCReader(),
+    secc_writer=SECCWriter(),
+    bp25_reader=BP25Reader(),
+    bp25_writer=BP25Writer(),
+    lb1024_reader=LB1024Reader(),
+    lb1024_writer=LB1024Writer(),
+    gpio=ControlGPIO(),
+    evse_reader=EVSEReader(),
+    evse_writer=EVSEWriter(),
+    bms_reader=BmsReader(),
+    bms_writer=BmsWriter(),
+)
+modules.create_connections()
+
+
 app = Flask(__name__, static_folder="dist/punionica", static_url_path="/")
 app.config["SECRET_KEY"] = "asdf"
 socketio = SocketIO(app)
@@ -21,14 +44,16 @@ def catch_all(path):
 
 @socketio.on("requested_charging_power")
 def requested_charging_power(message):
-    # todo: shared memory write
-    print(message)
+    modules.evse_writer.user_requested_charging_power(power=message["power"])
+    # sleep(0.5)
+    # modules.evse_reader.user_requested_charging_power(show_on_console=True)
 
 
 @socketio.on("requested_price_limit")
 def requested_price_limit(message):
-    # todo: shared memory write
-    print(message)
+    modules.evse_writer.charge_session_cost_limit(limit=message["price_limit"])
+    # sleep(0.5)
+    # modules.evse_reader.charge_session_cost_limit(show_on_console=True)
 
 
 @socketio.on("card_tap_confirmation")
@@ -47,9 +72,23 @@ def payment_processing():
 
 @socketio.on("vehicle_plugin_status")
 def vehicle_plugin_status():
-    # todo: shm reading until newSessionMessage + timeout
-    sleep(1)
-    socketio.emit("vehicle_plugin_status", 1)
+    # All values are expressed in ms as modules parsers expand time from seconds to miliseconds [time.time() * 1000]
+    timeout_start = time.time() * 1000
+    timeout_limit = 15000  # Timeout limit of 15 seconds
+
+    while True:
+        sleep(0.5)
+        if (timeout_counter := time.time() * 1000 - timeout_start) > timeout_limit:
+            logger.error(
+                f"EVSE did not transition to state 'Charging' for {timeout_counter / 1000} sec"
+            )
+        if state := modules.evse_reader.evse_state() != 4:
+            logger.debug(f"EVSE not in 'Charge' state, EVSE in state: {state}")
+            continue
+
+        else:
+            logger.debug("EVSE in state 'Charge'")
+            socketio.emit("vehicle_plugin_status", 1)
 
 
 @socketio.on("charge_session_telemetry_request")
@@ -119,7 +158,7 @@ def status_change():
         print("starting background checks")
         socketio.start_background_task(background_checks())
     else:
-        print("bg checks already running")
+        print("background checks already running")
 
 
 def background_checks():
@@ -127,10 +166,10 @@ def background_checks():
     background_task = 1
 
     d0 = dict(
-      estop=0,
-      secc="secc_state",
-      evse=5,
-      redirect_request="redirect_request",
+        estop=0,
+        secc="secc_state",
+        evse=5,
+        redirect_request="redirect_request",
     )
 
     d1 = dict(
@@ -186,5 +225,12 @@ def background_checks():
 
 
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", debug=False)
-    socketio.run(app=app, debug=True, host="0.0.0.0", allow_unsafe_werkzeug=True)
+    try:
+        # app.run(host="0.0.0.0", debug=False)
+        socketio.run(app=app, debug=True, host="0.0.0.0", allow_unsafe_werkzeug=True)
+
+    except Exception as err:
+        logger.error(err)
+
+    finally:
+        modules.destroy_objects()
