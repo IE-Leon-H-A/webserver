@@ -72,9 +72,6 @@ export class PaymentComponent implements OnInit {
   }
 
   vehiclePlugIn() {
-    // Timeout is done in the backend
-    this.openDialog(this.startToCharge);
-
     this.sharedService.sock.on("vehicle_plugin_status", (pluginSuccessful: any) => {
       console.log("payment_processing (bool): " + pluginSuccessful);
 
@@ -88,6 +85,9 @@ export class PaymentComponent implements OnInit {
     });
 
     this.sharedService.sock.emit("vehicle_plugin_status");
+
+    // Timeout is done in the backend
+    this.openDialog(this.startToCharge);
   }
 
   openDialog(dialogName: any) {
