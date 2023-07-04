@@ -76,7 +76,9 @@ export class PaymentComponent implements OnInit {
     this.openDialog(this.startToCharge);
 
     this.sharedService.sock.on("vehicle_plugin_status", (pluginSuccessful: any) => {
-      if (pluginSuccessful) {
+      console.log("payment_processing (bool): " + pluginSuccessful);
+
+      if (pluginSuccessful === 1) {
         this.router.navigateByUrl('/charging');
       } else {
         // Funds return is done by the backend after it emits this socketio message
