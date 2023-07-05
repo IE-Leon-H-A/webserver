@@ -53,13 +53,13 @@ def data_request():
     data_dict = dict()
     for i, cell in enumerate(modules.bms_reader.addresses_reference.keys()):
         if i + 1 <= 366:
-            value = modules.bms_reader.read_memory(address=cell, field_has_timestamp=False).value
+            value = modules.bms_reader.read_memory(
+                address=cell, field_has_timestamp=False
+            ).value
             data_dict[i + 1] = int().from_bytes(value, byteorder="big", signed=True)
         else:
             pass
-    socketio.emit('battery_data_response', json.dumps(
-        data_dict
-    ))
+    socketio.emit("battery_data_response", json.dumps(data_dict))
 
 
 @socketio.on("requested_charging_power")
@@ -110,32 +110,26 @@ def vehicle_plugin_status():
 
 @socketio.on("charge_session_telemetry_request")
 def charge_session_telemetry():
-    # todo: add check and exit if price limit reached -> FE has open ws callback for charging stop
-    # todo: add check and exit if SoC == 100%         -> FE has open ws callback for charging stop
+    charging_active = modules.evse_reader.charging_active_flag().data
+    soc = modules.secc_reader.chargingLoop().data["stateOfCharge"]
+    money_spent = modules.evse_reader.charge_session_spent_cash().data
+    money_left = modules.evse_reader.charge_session_remaining_cash().data
+    charging_power = modules.evse_reader.present_charging_power().data
+    time_remaining_min = modules.evse_reader.charge_session_time_remaining().data
 
-    # todo: data required for all calcs:
-    #   * charging start time             [system clock secs] - NOT DATE STRING
-    #   * charging stop time              [system clock secs] - NOT DATE STRING
-    #   * active charging power           [kW]
-    #   * EV start SoC (chargeLoop)       [%]
-    #   * EV present SoC (chargeLoop)     [%]
-    #   * user price limit                [eur]
-
-    # todo: required calcs based on colleted data:
-    #   * elapsed time calc               [system clock secs] - NOT DATE STRING
-    #   * transfered energy               [kWh]
-    #   * money spent                     [eur]
-    #   * money left                      [eur]
-    #   * time remaining                  [sec] -> (include logic for power ramp-up/downs)
-
-    # ! todo: vehicle SoC get from secc_reader.charging_loop message
-
-    socketio.emit("charge_session_telemetry",
-                  json.dumps(
-                      dict(
-                          hello="world"
-                      )
-                  ))
+    socketio.emit(
+        "charge_session_telemetry",
+        json.dumps(
+            dict(
+                charging_active=charging_active,
+                soc=soc,
+                money_spent=money_spent,
+                money_left=money_left,
+                charging_power=charging_power,
+                time_remaining_min=time_remaining_min,
+            )
+        ),
+    )
 
 
 @socketio.on("charging_stop")
@@ -199,13 +193,8 @@ def background_checks():
         print(evse_state)
 
         socketio.emit(
-          "status_update",
-          json.dumps(
-            dict(
-              estop=int(estop_state),
-              evse=int(evse_state)
-            )
-          ),
+            "status_update",
+            json.dumps(dict(estop=int(estop_state), evse=int(evse_state))),
         )
 
         sleep(0.5)
