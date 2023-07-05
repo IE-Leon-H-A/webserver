@@ -78,60 +78,57 @@ export class HeaderComponent implements OnInit {
   // }
 
   getBackgroundStatus = () => {
-    let estop_state = -1;
-    let evse_state = -1;
+    let estop_state = 0;
+    let evse_state = 0;
     let secc_state = 0;
 
     this.sharedService.sock.on('status_update', (message: any) => {
       console.log(message);
       let update = JSON.parse(message);
 
-      if (update["estop"] != estop_state){
-        // state changed
-        if (update["estop"] === 0 && estop_state === 0) {
-          // Estop not active, modal not active -> pass
-        }
-        else if (update["estop"] === 1 && estop_state === 0) {
-          // Estop active, modal not active
-          this.openDialog(this.eStopActive);
-        }
-        else if (update["estop"] === 1 && estop_state === 1) {
-          // Estop active, modal active -> pass
-        }
-        else if (update["estop"] === 0 && estop_state === 1) {
-          // Estop not active, modal active
-          this.dialog.closeAll();
-          this.router.navigateByUrl("/home");
-        }
-        else {
-          console.log("unknown estop state")
-        }
-        // update state
-        estop_state = update["estop"];
+      // if (update["estop"] != estop_state){
+      //   // state changed
+      if (update["estop"] === 0 && estop_state === 0) {
+        // Estop not active, modal not active -> pass
+      } else if (update["estop"] === 1 && estop_state === 0) {
+        // Estop active, modal not active
+        this.openDialog(this.eStopActive);
+      } else if (update["estop"] === 1 && estop_state === 1) {
+        // Estop active, modal active -> pass
+      } else if (update["estop"] === 0 && estop_state === 1) {
+        // Estop not active, modal active
+        this.dialog.closeAll();
+        this.router.navigateByUrl("/home");
+      } else {
+        console.log("unknown estop state")
       }
+      // update state
+      estop_state = update["estop"];
+      // }
 
-      else if (update["evse"] != evse_state){
-        // state changed
+      // else if (update["evse"] != evse_state){
+      //   // state changed
+      if (update["estop"] === 0) {
+
         if (update["evse"] === 0 && evse_state === 0) {
           // evse not booted, modal is active -> pass
-        }
-        else if (update["evse"] === 0 && evse_state !== 0) {
+        } else if (update["evse"] === 0 && evse_state !== 0) {
           // evse not booted, modal not active
           this.openDialog(this.serviceUnavailable);
-        }
-        else if (update["evse"] !== 0 && evse_state !== 0) {
+        } else if (update["evse"] !== 0 && evse_state !== 0) {
           // evse booted, modal not active -> pass
-        }
-        else if (update["evse"] !== 0 && evse_state === 0) {
+        } else if (update["evse"] !== 0 && evse_state === 0) {
           // evse booted, modal still active
+          evse_state = -1;
           this.dialog.closeAll();
           this.router.navigateByUrl("/home");
-        }
-        else {
+        } else {
           console.log("unknown evse state");
         }
         // update state
-        evse_state = update["evse"];
+        if (evse_state !== -1){
+          evse_state = update["evse"];
+        }
       }
     })
   }
