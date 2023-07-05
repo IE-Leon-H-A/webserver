@@ -195,12 +195,15 @@ def background_checks():
         # todo:
         # redirect_request = modules.evse_reader.get_redirect_request().data
 
+        print(estop_state)
+        print(evse_state)
+
         socketio.emit(
           "status_update",
           json.dumps(
             dict(
-              estop=estop_state,
-              evse=evse_state
+              estop=int(estop_state),
+              evse=int(evse_state)
             )
           ),
         )
