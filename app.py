@@ -64,7 +64,11 @@ def data_request():
 
 @socketio.on("requested_charging_power")
 def requested_charging_power(message):
-    modules.evse_writer.user_requested_charging_power(power=message["power"])
+    # ! temporary for testing without batteries
+    modules.evse_writer.user_requested_charging_power(power=10)
+    # modules.evse_writer.user_requested_charging_power(power=message["power"])
+
+    # DEBUGGING
     # sleep(0.5)
     # modules.evse_reader.user_requested_charging_power(show_on_console=True)
 
@@ -72,6 +76,8 @@ def requested_charging_power(message):
 @socketio.on("requested_price_limit")
 def requested_price_limit(message):
     modules.evse_writer.charge_session_cost_limit(limit=message["price_limit"])
+
+    # DEBUGGING
     # sleep(0.5)
     # modules.evse_reader.charge_session_cost_limit(show_on_console=True)
 
@@ -135,7 +141,7 @@ def charge_session_telemetry():
 @socketio.on("charging_stop")
 def charging_stop():
     modules.secc_writer.sequenceControl(control_mode=65536)
-    # todo: based on secc status check
+    # todo: emit shall be based on secc status check
     socketio.emit("charging_stop", 1)
 
 
@@ -153,63 +159,53 @@ def background_checks():
     global background_task
     background_task = 1
 
-    d0 = dict(
-        estop=0,
-        secc="secc_state",
-        evse=5,
-        redirect_request="redirect_request",
-    )
-
-    d1 = dict(
-        estop=1,
-        secc="secc_state",
-        evse=5,
-        redirect_request="redirect_request",
-    )
-
-    d2 = dict(
-        estop=0,
-        secc="secc_state",
-        evse=5,
-        redirect_request="redirect_request",
-    )
-
-    d3 = dict(
-        estop=0,
-        secc="secc_state",
-        evse=0,
-        redirect_request="redirect_request",
-    )
+    # d0 = dict(
+    #     estop=0,
+    #     secc="secc_state",
+    #     evse=5,
+    #     redirect_request="redirect_request",
+    # )
+    #
+    # d1 = dict(
+    #     estop=1,
+    #     secc="secc_state",
+    #     evse=5,
+    #     redirect_request="redirect_request",
+    # )
+    #
+    # d2 = dict(
+    #     estop=0,
+    #     secc="secc_state",
+    #     evse=5,
+    #     redirect_request="redirect_request",
+    # )
+    #
+    # d3 = dict(
+    #     estop=0,
+    #     secc="secc_state",
+    #     evse=0,
+    #     redirect_request="redirect_request",
+    # )
 
     while True:
-        # estop_state = gpio.e_stop_status()
-        # secc_state = secc_reader.advanticsControllerStatus()
-        # evse_state = evse_reader.get_evse_state()[1]
-        # redirect_request = evse_reader.get_redirect_request()
+        estop_state = modules.gpio.e_stop_status()
+        evse_state = modules.evse_reader.evse_state().data
+        secc_state = modules.secc_reader.advanticsControllerStatus().data
 
-        # socketio.emit(
-        #   "status_update",
-        #   json.dumps(d0),
-        # )
-        # sleep(3)
-        #
-        # socketio.emit(
-        #     "status_update",
-        #     json.dumps(d1),
-        # )
-        # sleep(3)
-        #
-        # socketio.emit(
-        #     "status_update",
-        #     json.dumps(d2),
-        # )
-        # sleep(3)
-        #
-        # socketio.emit(
-        #     "status_update",
-        #     json.dumps(d3),
-        # )
-        sleep(3)
+        # todo:
+        # redirect_request = modules.evse_reader.get_redirect_request().data
+
+        socketio.emit(
+          "status_update",
+          json.dumps(
+            dict(
+              estop=estop_state,
+              evse=evse_state
+            )
+          ),
+        )
+
+        sleep(0.5)
 
 
 if __name__ == "__main__":
