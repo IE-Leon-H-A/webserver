@@ -78,8 +78,8 @@ export class HeaderComponent implements OnInit {
   // }
 
   getBackgroundStatus = () => {
-    let estop_state = 0;
-    let evse_state = 0;
+    let estop_state = -1;
+    let evse_state = -1;
     let secc_state = 0;
 
     this.sharedService.sock.on('status_update', (message: any) => {
