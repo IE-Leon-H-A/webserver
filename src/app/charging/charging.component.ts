@@ -77,8 +77,8 @@ export class ChargingComponent implements OnInit {
 
   populateReceivedTelemetry() {
     this.sharedService.sock.on('charge_session_telemetry', (message: any) => {
-      // console.log(message);
       let telemetry = JSON.parse(message);
+      console.log(message);
 
       if (telemetry["charging_active"] === 1) {
         this.soc = telemetry["soc"];
