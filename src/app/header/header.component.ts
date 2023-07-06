@@ -90,6 +90,7 @@ export class HeaderComponent implements OnInit {
         // Estop not active, modal not active -> pass
       } else if (update["estop"] === 1 && estop_state === 0) {
         // Estop active, modal not active
+        this.dialog.closeAll();
         this.openDialog(this.eStopActive);
       } else if (update["estop"] === 1 && estop_state === 1) {
         // Estop active, modal active -> pass
@@ -113,6 +114,7 @@ export class HeaderComponent implements OnInit {
           // evse not booted, modal is active -> pass
         } else if (update["evse"] === 0 && evse_state !== 0) {
           // evse not booted, modal not active
+          this.dialog.closeAll();
           this.openDialog(this.serviceUnavailable);
         } else if (update["evse"] !== 0 && evse_state !== 0) {
           // evse booted, modal not active -> pass
