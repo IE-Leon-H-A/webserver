@@ -67,16 +67,6 @@ export class HeaderComponent implements OnInit {
     console.log("requested continuous background evse status checks");
   }
 
-  // sendMessage(message: any) {
-  //   this.sock.emit('request', message);
-  // }
-
-  // getNewMessage = () => {
-  //   this.sock.on('response', (message: any) => {
-  //     console.log(message);
-  //   })
-  // }
-
   getBackgroundStatus = () => {
     let estop_state = 0;
     let evse_state = -1;
@@ -91,15 +81,13 @@ export class HeaderComponent implements OnInit {
       } else if (update["estop"] === 1 && estop_state === 0) {
         // Estop active, modal not active
         this.dialog.closeAll();
+        this.router.navigateByUrl("/home");  // Open on home instead of in the middle of sequence
         this.openDialog(this.eStopActive);
       } else if (update["estop"] === 1 && estop_state === 1) {
         // Estop active, modal active -> pass
       } else if (update["estop"] === 0 && estop_state === 1) {
         // Estop not active, modal active
         this.dialog.closeAll();
-        // ! Line below might not be needed as after E-STOP,
-        // ! service unavailable always shows as EVSE is not booted
-        // this.router.navigateByUrl("");  // Redirect to 'home'
         evse_state = -1;
       } else {
         console.log("unknown estop state")
@@ -123,7 +111,6 @@ export class HeaderComponent implements OnInit {
         } else if (update["evse"] !== 0 && evse_state === 0) {
           // evse booted, modal still active
           this.dialog.closeAll();
-          this.router.navigateByUrl("");  // Redirect to 'home'
         } else {
           console.log("unknown evse state");
         }
