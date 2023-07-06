@@ -66,7 +66,7 @@ export class ChargingComponent implements OnInit {
 
   chargingStop() {
     this.sharedService.sock.on('charging_stop', (stop_confirm: any) => {
-      console.log("card_tap_confirmation (bool): " + stop_confirm);
+      console.log("charging stop confirm (bool): " + stop_confirm);
       if (stop_confirm) {
         this.router.navigateByUrl("/home");
       } else {
