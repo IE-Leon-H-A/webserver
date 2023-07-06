@@ -97,7 +97,9 @@ export class HeaderComponent implements OnInit {
       } else if (update["estop"] === 0 && estop_state === 1) {
         // Estop not active, modal active
         this.dialog.closeAll();
-        this.router.navigateByUrl("/home");
+        // ! Line below might not be needed as after E-STOP,
+        // ! service unavailable always shows as EVSE is not booted
+        // this.router.navigateByUrl("");  // Redirect to 'home'
         evse_state = -1;
       } else {
         console.log("unknown estop state")
@@ -121,7 +123,7 @@ export class HeaderComponent implements OnInit {
         } else if (update["evse"] !== 0 && evse_state === 0) {
           // evse booted, modal still active
           this.dialog.closeAll();
-          this.router.navigateByUrl("/home");
+          this.router.navigateByUrl("");  // Redirect to 'home'
         } else {
           console.log("unknown evse state");
         }
