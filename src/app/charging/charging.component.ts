@@ -12,33 +12,15 @@ import {jsDocComment} from "@angular/compiler";
 })
 export class ChargingComponent implements OnInit {
 
-  // Exit flag
-  // charging_active_flag = 1;
-
   // Are changed based on user input from pevious page
   price = this.sharedService.power.price;
   price_limit = Number(this.sharedService.priceLimit);
   charging_power = this.sharedService.power.power;
-
-  // // Hadcoded
-  // start_time = new Date().getTime() / 1000;
-  // ev_capacity = 40;
-  // ev_start_soc = this.randomInteger(30, 50);
-
-  // func vars
-  // elapsed_time = 0;
-  // trasnfered_kwh = 0;
   soc = 0;
   money_spent = 0;
   money_left = 0;
   time_remaining_sec = 0;
   time_remaining_min = 0;
-
-  approx_energy = this.price_limit / this.price;
-  // console.log("approx energy: " + String(approx_energy) + " kWh");
-  // approx_time = (this.approx_energy / this.charging_power) * 3600;
-  // console.log("approx time: " + String(approx_time) + " sec");
-
 
   constructor(
     private dialogRef: MatDialog,
@@ -85,21 +67,18 @@ export class ChargingComponent implements OnInit {
         this.money_spent = telemetry["money_spent"];
         this.money_left = telemetry["money_left"];
         this.charging_power = telemetry["charging_power"];
-        this.time_remaining_min = telemetry["time_remaining_min"];
+        this.time_remaining_min = Math.floor(telemetry["time_remaining_sec"] / 60);
+        this.time_remaining_sec = telemetry["time_remaining_sec"] % 60;
       } else {
         this.router.navigateByUrl("/home");
       }
-
-
     })
-
   }
 
   requestChargingTelemetry() {
 
     setTimeout(() => {
       this.sharedService.sock.emit("charge_session_telemetry_request");
-
       if (this.router.url === "/charging") {
         this.requestChargingTelemetry();
       }
