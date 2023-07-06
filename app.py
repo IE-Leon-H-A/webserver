@@ -100,8 +100,8 @@ def payment_processing():
 def vehicle_plugin_status():
     while True:
         secc_state = modules.secc_reader.advanticsControllerStatus().data
-        if secc_state not in [2, 3, 4]:
-            logger.debug(f"SECC in state [{secc_state}] which != [2, 3, 4]")
+        if secc_state != 4:
+            logger.debug(f"SECC in state [{secc_state}] waiting for state 'Charge'")
             sleep(0.5)
         else:
             socketio.emit("vehicle_plugin_status", 1)
@@ -115,7 +115,7 @@ def charge_session_telemetry():
     money_spent = modules.evse_reader.charge_session_spent_cash().data
     money_left = modules.evse_reader.charge_session_remaining_cash().data
     charging_power = modules.evse_reader.present_charging_power().data
-    time_remaining_min = modules.evse_reader.charge_session_time_remaining().data
+    time_remaining_sec = modules.evse_reader.charge_session_time_remaining().data
 
     socketio.emit(
         "charge_session_telemetry",
@@ -126,7 +126,7 @@ def charge_session_telemetry():
                 money_spent=money_spent,
                 money_left=money_left,
                 charging_power=charging_power,
-                time_remaining_min=time_remaining_min,
+                time_remaining_sec=time_remaining_sec,
             )
         ),
     )
