@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { PowerSelectComponent } from './power-select/power-select.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ChargingComponent } from './charging/charging.component';
+import { SummaryComponent } from './summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ChargingComponent } from './charging/charging.component';
     PowerSelectComponent,
     AddValueComponent,
     PaymentComponent,
-    ChargingComponent
+    ChargingComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,

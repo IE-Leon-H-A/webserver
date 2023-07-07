@@ -16,11 +16,11 @@ export class PowerSelectComponent implements OnInit {
     },
     {
       power: 100,
-      price: 0.82
+      price: 0.83
     },
     {
       power: 150,
-      price: 0.85
+      price: 0.87
     },
     {
       power: 200,

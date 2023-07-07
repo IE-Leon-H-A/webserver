@@ -64,7 +64,7 @@ export class AddValueComponent implements OnInit {
   }
 
   goToPayment(price_limit: any) {
-    this.sharedService.sock.emit("requested_price_limit", {"price_limit": price_limit});
+    this.sharedService.sock.emit("requested_cash_limit", {"price_limit": price_limit});
     this.router.navigateByUrl('/payment');
   }
 }

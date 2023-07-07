@@ -1,0 +1,40 @@
+<div class="content">
+	<div class="title m-4 text-center" style="font-weight: bold; font-size: 48px; color: white; ">Charging complete
+	</div>
+
+	<div class="row mb-4">
+		<div class="col-4">
+			<div class="charging-box">
+				<div class="title">
+					CAR BATTERY LEVEL
+				</div>
+				<div class="content">
+					<div>{{soc | number:"1.0-0"}}<small> %</small></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="charging-box">
+				<div class="title">
+					ADDED TO BATTERY
+				</div>
+				<div class="content">
+					<div>{{spent_energy_kwh}}<small> kWh</small></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="charging-box">
+				<div class="title">
+					SPENT
+				</div>
+				<div class="content">
+					<div>{{money_spent}}<small> €</small></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button mat-flat-button color="primary" class="mb-4 green-button mt-auto" [routerLink]="['/home']">
+		Close
+	</button>
+</div>

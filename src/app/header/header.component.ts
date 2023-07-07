@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import { SharedService } from '../_services/shared.service';
+import {SharedService} from '../_services/shared.service';
 
 
 @Component({
@@ -13,8 +13,6 @@ export class HeaderComponent implements OnInit {
   @ViewChild('serviceUnavailable') serviceUnavailable: ElementRef | undefined;
   @ViewChild('eStopActive') eStopActive: ElementRef | undefined;
 
-  // sock = io();
-
   constructor(
     public router: Router,
     private dialog: MatDialog,
@@ -23,8 +21,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.startBackgroundChecks();
-    this.getBackgroundStatus();
+    this.evseStatusResponse();
+    this.evseStatusRequest();
   }
 
   goBack() {
@@ -62,17 +60,16 @@ export class HeaderComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  startBackgroundChecks(): void {
-    this.sharedService.sock.emit("start_background_checks");
-    console.log("requested continuous background evse status checks");
+  evseStatusRequest(): void {
+    this.sharedService.sock.emit("evse_status_req");
+    console.log("requested continuous background status checks");
   }
 
-  getBackgroundStatus = () => {
+  evseStatusResponse = () => {
     let estop_state = 0;
     let evse_state = -1;
-    let secc_state = 0;
 
-    this.sharedService.sock.on('status_update', (message: any) => {
+    this.sharedService.sock.on('evse_status_resp', (message: any) => {
       console.log(message);
       let update = JSON.parse(message);
 
@@ -99,8 +96,7 @@ export class HeaderComponent implements OnInit {
         if (evse_state === -1) {
           // initial boot, evse not booted, modal is not active
           this.openDialog(this.serviceUnavailable);
-        }
-        else if (update["evse"] === 0 && evse_state === 0) {
+        } else if (update["evse"] === 0 && evse_state === 0) {
           // evse not booted, modal is active -> pass
         } else if (update["evse"] === 0 && evse_state !== 0) {
           // evse not booted, modal not active
@@ -115,7 +111,6 @@ export class HeaderComponent implements OnInit {
           console.log("unknown evse state");
         }
       }
-
       evse_state = update["evse"];
     })
   }

@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { PowerSelectComponent } from './power-select/power-select.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ChargingComponent } from './charging/charging.component';
+import { SummaryComponent } from './summary/summary.component';
 
 const routes: Routes = [
   { path: 'charging', component: ChargingComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'power-select', component: PowerSelectComponent },
   { path: 'add-value', component: AddValueComponent },
+  { path: 'summary', component: SummaryComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
