@@ -110,7 +110,6 @@ def vehicle_plugin_status():
 
 @socketio.on("charge_session_telemetry_request")
 def charge_session_telemetry():
-    charging_active = modules.evse_reader.charging_active_flag().data
     soc = modules.secc_reader.chargingLoop().data["stateOfCharge"]
     money_spent = modules.evse_reader.charge_session_spent_cash().data
     money_left = modules.evse_reader.charge_session_remaining_cash().data
@@ -121,7 +120,7 @@ def charge_session_telemetry():
         "charge_session_telemetry",
         json.dumps(
             dict(
-                charging_active=charging_active,
+                charging_active=1,
                 soc=soc,
                 money_spent=money_spent,
                 money_left=money_left,
