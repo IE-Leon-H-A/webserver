@@ -9,6 +9,13 @@ export class SharedService {
 
   sock = io();
 
+  ev_soc = 0;
+  cash_spent = 0;
+  cash_left = 0;
+  charging_power = 0;
+  time_remaining = 0;
+  energy_transfered = 0;
+
   power = {
     power: 50,
     price: 0.82
