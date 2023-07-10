@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
-
 import {SharedService} from '../_services/shared.service';
-import {jsDocComment} from "@angular/compiler";
 
 
 @Component({
@@ -18,22 +16,19 @@ export class SummaryComponent implements OnInit {
 
     constructor(
         private dialogRef: MatDialog,
-        private sharedService: SharedService,
+        private shared: SharedService,
+        private router: Router
     ) {
         this.dialogRef.closeAll();
     }
 
     ngOnInit(): void {
-        //     this.sharedService.sock.on('charge_session_summary', (message: any) => {
-        //         let telemetry = JSON.parse(message);
-        //         console.log(message);
-        //
-        //         this.soc = telemetry["soc"];
-        //         this.spent_energy_kwh = telemetry["spent_energy_kwh"];
-        //         this.money_spent = telemetry["money_spent"];
-        //     })
-        //
-        //     this.sharedService.sock.emit("charge_session_summary");
-        // }
+      this.soc = this.shared.ev_soc;
+      this.spent_energy_kwh = this.shared.energy_transfered;
+      this.money_spent = this.shared.cash_spent;
+
+        setTimeout(() => {
+          this.router.navigateByUrl("/home");
+        }, 7000)
     }
 }
