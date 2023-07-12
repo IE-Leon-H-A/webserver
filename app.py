@@ -49,7 +49,7 @@ def battery(path):
     return app.send_static_file("index.html")
 
 
-@socketio.on("battery_data_request")
+@socketio.on("battery_request")
 def data_request():
     data_dict = dict()
     for i, cell in enumerate(modules.bms_reader.addresses_reference.keys()):
@@ -60,7 +60,7 @@ def data_request():
             data_dict[i + 1] = int().from_bytes(value, byteorder="big", signed=True)
         else:
             pass
-    socketio.emit("battery_data_response", json.dumps(data_dict))
+    socketio.emit("battery_response", json.dumps(data_dict))
 
 
 @socketio.on("requested_charging_power")
