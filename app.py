@@ -43,9 +43,10 @@ def catch_all(path):
     return app.send_static_file("index.html")
 
 
-@app.route("/battery")
-def battery():
-    return render_template("battery_cabinet.html")
+@app.route("/battery", defaults={"path": ""})
+@app.route("/<path:path>")
+def battery(path):
+    return app.send_static_file("index.html")
 
 
 @socketio.on("battery_data_request")

@@ -14,6 +14,7 @@ import { PowerSelectComponent } from './power-select/power-select.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ChargingComponent } from './charging/charging.component';
 import { SummaryComponent } from './summary/summary.component';
+import { BatteryComponent } from './battery/battery.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SummaryComponent } from './summary/summary.component';
     AddValueComponent,
     PaymentComponent,
     ChargingComponent,
-    SummaryComponent
+    SummaryComponent,
+    BatteryComponent
   ],
   imports: [
     BrowserModule,

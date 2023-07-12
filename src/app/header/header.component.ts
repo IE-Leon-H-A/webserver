@@ -49,6 +49,10 @@ export class HeaderComponent implements OnInit {
     if (this.router.url === '/summary') {
       this.router.navigateByUrl('/home');
     }
+
+    if (this.router.url === '/battery') {
+      this.router.navigateByUrl('/home');
+    }
   }
 
   openDialog(dialogName: any) {

@@ -43,14 +43,21 @@ def catch_all(path):
     return app.send_static_file("index.html")
 
 
-@app.route("/battery")
-def battery():
-    return render_template("battery_cabinet.html")
+@app.route("/battery", defaults={"path": ""})
+@app.route("/<path:path>")
+def battery(path):
+    return app.send_static_file("index.html")
 
 
-@socketio.on("battery_data_request")
+@socketio.on("battery_request")
 def data_request():
-    pass
+    asdf = dict()
+    asdf[1] = 3246
+    asdf[3] = 3248
+    asdf[4] = 3217
+    socketio.emit("battery_response", json.dumps(
+      asdf
+    ))
     # data_dict = dict()
     # for i, cell in enumerate(modules.bms_reader.addresses_reference.keys()):
     #     if i + 1 <= 366:
