@@ -13,9 +13,7 @@ export class PaymentComponent implements OnInit {
   @ViewChild('plugIn') startToCharge: ElementRef | undefined;
 
   processingPayment = false;
-
   infoText = 'Processing payment';
-
 
   constructor(
     public sharedService: SharedService,
@@ -29,66 +27,57 @@ export class PaymentComponent implements OnInit {
   }
 
   cardTapConfirmation() {
-    this.sharedService.sock.on("card_tap_confirmation", (cardTapSuccessful: boolean) => {
-      console.log("card_tap_confirmation (bool): " + cardTapSuccessful);
-
+    this.sharedService.sock.on("card_tap_confirmation_resp", (cardTapSuccessful: boolean) => {
+      console.log("card_tap_confirmation_resp (bool): " + cardTapSuccessful);
       if (cardTapSuccessful) {
         this.paymentProcessing();
-      }
-      else {
+      } else {
         // todo: add modal to inform user about timeout and that the funds will be returned
         this.router.navigateByUrl("/home");
       }
     });
-
-    this.sharedService.sock.emit("card_tap_confirmation");
+    console.log("card_tap_confirmation_req");
+    this.sharedService.sock.emit("card_tap_confirmation_req");
   }
 
   paymentProcessing() {
     this.processingPayment = true;
     this.infoText = 'Processing payment';
-
-    this.sharedService.sock.on("payment_processing", (paymentProcessSuccessful: boolean) => {
-      console.log("payment_processing (bool): " + paymentProcessSuccessful);
-
+    this.sharedService.sock.on("payment_processing_resp", (paymentProcessSuccessful: boolean) => {
+      console.log("payment_processing_resp (bool): " + paymentProcessSuccessful);
       if (paymentProcessSuccessful) {
         this.paymentSuccess();
-      }
-      else {
+      } else {
         // todo: add modal to inform user about timeout and that the funds will be returned
         this.router.navigateByUrl("/home");
       }
     });
-
-    this.sharedService.sock.emit("payment_processing");
+    console.log("payment_processing_req");
+    this.sharedService.sock.emit("payment_processing_req");
   }
 
   paymentSuccess() {
+    console.log("payment successful icon");
     this.infoText = 'Payment Succesful';
-
     setTimeout(() => {
       this.vehiclePlugIn();
     }, 5000);
   }
 
   vehiclePlugIn() {
-    this.sharedService.sock.on("vehicle_plugin_status", (pluginSuccessful: any) => {
-      console.log("vehiclePlugIn (bool): " + pluginSuccessful);
-
+    this.openDialog(this.startToCharge);
+    this.sharedService.sock.on("vehicle_plugin_resp", (pluginSuccessful: any) => {
+      console.log("vehiclePlugIn_resp (bool): " + pluginSuccessful);
       if (pluginSuccessful === 1) {
         this.dialog.closeAll();
         this.router.navigateByUrl('/charging');
       } else {
-        // Funds return is done by the backend after it emits this socketio message
         // todo: add modal to inform user about timeout and that the funds will be returned
         this.router.navigateByUrl('/home');
       }
     });
-
-    this.sharedService.sock.emit("vehicle_plugin_status");
-
-    // Timeout is done in the backend
-    this.openDialog(this.startToCharge);
+    console.log("vehicle_plugin_req");
+    this.sharedService.sock.emit("vehicle_plugin_req");
   }
 
   openDialog(dialogName: any) {

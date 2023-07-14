@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { SharedService } from '../_services/shared.service';
 
 @Component({
@@ -38,7 +37,8 @@ export class PowerSelectComponent implements OnInit {
 
   goToAddValue(power: any) {
     this.sharedService.power = power;
-    this.sharedService.sock.emit("requested_charging_power", power);
+    console.log("requested_charging_power = " + String(power["power"]));
+    this.sharedService.sock.emit("requested_charging_power", power["power"]);
     this.router.navigateByUrl('/add-value');
   }
 

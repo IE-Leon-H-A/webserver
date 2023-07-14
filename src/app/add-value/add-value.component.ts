@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../_services/shared.service';
+import {Component, OnInit} from '@angular/core';
+import {SharedService} from '../_services/shared.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -9,18 +9,18 @@ import {Router} from "@angular/router";
 export class AddValueComponent implements OnInit {
 
   keyboardButtons = [
-    { value: '1' },
-    { value: '2' },
-    { value: '3' },
-    { value: '4' },
-    { value: '5' },
-    { value: '6' },
-    { value: '7' },
-    { value: '8' },
-    { value: '9' },
-    { value: '00' },
-    { value: '0' },
-    { value: 'backspace' }
+    {value: '1'},
+    {value: '2'},
+    {value: '3'},
+    {value: '4'},
+    {value: '5'},
+    {value: '6'},
+    {value: '7'},
+    {value: '8'},
+    {value: '9'},
+    {value: '00'},
+    {value: '0'},
+    {value: 'backspace'}
   ];
 
   constructor(
@@ -63,8 +63,9 @@ export class AddValueComponent implements OnInit {
     this.sharedService.calculatedKwh = Number(this.sharedService.priceLimit) / this.sharedService.power.price
   }
 
-  goToPayment(price_limit: any) {
-    this.sharedService.sock.emit("requested_cash_limit", {"price_limit": price_limit});
+  goToPayment(cash_limit: any) {
+    console.log("requested_cash_limit = " + String(cash_limit));
+    this.sharedService.sock.emit("requested_cash_limit", cash_limit);
     this.router.navigateByUrl('/payment');
   }
 }

@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit {
 
   evseStatusRequest(): void {
     this.sharedService.sock.emit("evse_status_req");
-    console.log("requested continuous background status checks");
+    console.log("ev_status_req");
   }
 
   evseStatusResponse = () => {
@@ -78,6 +78,7 @@ export class HeaderComponent implements OnInit {
     let evse_state = -1;
 
     this.sharedService.sock.on('evse_status_resp', (message: any) => {
+      console.log("evse_status_resp");
       console.log(message);
       let update = JSON.parse(message);
 

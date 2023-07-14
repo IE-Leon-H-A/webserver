@@ -64,40 +64,40 @@ def data_request():
 
 
 @socketio.on("requested_charging_power")
-def requested_charging_power(message):
+def requested_charging_power(charging_power):
     # ! temporary for testing without batteries
     modules.evse_writer.user_requested_charging_power(power=10)
-    # modules.evse_writer.user_requested_charging_power(power=message["power"])
+    # modules.evse_writer.user_requested_charging_power(power=charging_power)
 
     # DEBUGGING
     # sleep(0.5)
     # modules.evse_reader.user_requested_charging_power(show_on_console=True)
 
 
-@socketio.on("requested_price_limit")
-def requested_price_limit(message):
-    modules.evse_writer.charge_session_cost_limit(limit=message["price_limit"])
+@socketio.on("requested_cash_limit")
+def requested_price_limit(cash_limit):
+    modules.evse_writer.charge_session_cost_limit(limit=cash_limit)
 
     # DEBUGGING
     # sleep(0.5)
     # modules.evse_reader.charge_session_cost_limit(show_on_console=True)
 
 
-@socketio.on("card_tap_confirmation")
+@socketio.on("card_tap_confirmation_req")
 def card_tap_confirmation():
     # todo: televend ping-pong
     sleep(1)
-    socketio.emit("card_tap_confirmation", 1)
+    socketio.emit("card_tap_confirmation_resp", 1)
 
 
-@socketio.on("payment_processing")
+@socketio.on("payment_processing_req")
 def payment_processing():
     # todo: televend ping-pong
     sleep(1)
-    socketio.emit("payment_processing", 1)
+    socketio.emit("payment_processing_resp", 1)
 
 
-@socketio.on("vehicle_plugin_status")
+@socketio.on("vehicle_plugin_req")
 def vehicle_plugin_status():
     while True:
         secc_state = modules.secc_reader.advanticsControllerStatus().data
@@ -105,11 +105,11 @@ def vehicle_plugin_status():
             logger.debug(f"SECC in state [{secc_state}] waiting for state 'Charge'")
             sleep(0.5)
         else:
-            socketio.emit("vehicle_plugin_status", 1)
+            socketio.emit("vehicle_plugin_resp", 1)
             break
 
 
-@socketio.on("charge_session_telemetry_request")
+@socketio.on("charge_session_telemetry_req")
 def charge_session_telemetry():
     soc = modules.secc_reader.chargingLoop().data["stateOfCharge"]
     money_spent = modules.evse_reader.charge_session_spent_cash().data
@@ -118,7 +118,7 @@ def charge_session_telemetry():
     time_remaining_sec = modules.evse_reader.charge_session_time_remaining().data
 
     socketio.emit(
-        "charge_session_telemetry",
+        "charge_session_telemetry_resp",
         json.dumps(
             dict(
                 charging_active=1,
@@ -132,68 +132,34 @@ def charge_session_telemetry():
     )
 
 
-@socketio.on("charging_stop")
+@socketio.on("charging_stop_req")
 def charging_stop():
     modules.secc_writer.sequenceControl(control_mode=65536)
     # todo: emit shall be based on secc status check
-    socketio.emit("charging_stop", 1)
+    socketio.emit("charging_stop_resp", 1)
 
 
-@socketio.on("start_background_checks")
+@socketio.on("evse_status_req")
 def status_change():
     global background_task
     if background_task != 1:
-        print("starting background checks")
+        print("evse_status loop [start]")
         socketio.start_background_task(background_checks())
     else:
-        print("background checks already running")
+        print("evse_status loop [running]")
 
 
 def background_checks():
     global background_task
     background_task = 1
 
-    # d0 = dict(
-    #     estop=0,
-    #     secc="secc_state",
-    #     evse=5,
-    #     redirect_request="redirect_request",
-    # )
-    #
-    # d1 = dict(
-    #     estop=1,
-    #     secc="secc_state",
-    #     evse=5,
-    #     redirect_request="redirect_request",
-    # )
-    #
-    # d2 = dict(
-    #     estop=0,
-    #     secc="secc_state",
-    #     evse=5,
-    #     redirect_request="redirect_request",
-    # )
-    #
-    # d3 = dict(
-    #     estop=0,
-    #     secc="secc_state",
-    #     evse=0,
-    #     redirect_request="redirect_request",
-    # )
-
     while True:
         estop_state = modules.gpio.e_stop_status()
         evse_state = modules.evse_reader.evse_state().data
         secc_state = modules.secc_reader.advanticsControllerStatus().data
 
-        # todo:
-        # redirect_request = modules.evse_reader.get_redirect_request().data
-
-        print(estop_state)
-        print(evse_state)
-
         socketio.emit(
-            "status_update",
+            "evse_status_resp",
             json.dumps(dict(estop=int(estop_state), evse=int(evse_state))),
         )
 
